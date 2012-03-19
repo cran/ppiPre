@@ -1,6 +1,6 @@
 SVMPredict<-function(training_set,predict_set,output="falsePPIs-ppiPre.csv",organism="yeast",drop ="IEA", replaceNA=0)
 {
-	wh_organism <- match.arg(organism, c("human", "fly", "mouse", "rat", "yeast", "zebrafish", "worm", "arabidopsis", "ecolik12", "bovine","canine","anopheles","ecsakai","chicken","chimp","malaria","rhesus","pig","xenopus"))
+	wh_organism <- match.arg(organism, c("human", "fly", "mouse", "rat", "yeast", "zebrafish", "worm", "arabidopsis", "ecolik12", "bovine","canine","anopheles","ecsakai","chicken","chimp","malaria","rhesus","pig","xenopus", "coelicolor"))
 	dropcodes <- drop
 	trainingsetevidences <- paste("AllEvidences-",training_set)
 	predictevidences <- paste("AllEvidences-",predict_set)
@@ -11,7 +11,7 @@ SVMPredict<-function(training_set,predict_set,output="falsePPIs-ppiPre.csv",orga
 	ComputeAllEvidences(input=predict_set,output=predictevidences, organism=wh_organism, drop = dropcodes )
 	predictset<- read.csv(predictevidences,header=TRUE,sep=",")
 	predictset[is.na(predictset)]<-replaceNA
-	predictset$labels<-factor(predictset$labels)
+	predictset$label<-factor(predictset$label)
 	predictset_noname<-predictset[,c(-1,-2)] 
 	svm.pred<-predict(svm.model, predictset_noname[,-1])
 	result <- cbind(predictset,svm.pred) #add the prediction result into the data to predict
@@ -22,22 +22,22 @@ SVMPredict<-function(training_set,predict_set,output="falsePPIs-ppiPre.csv",orga
 SVMTrain<-function(input, replaceNA = 0)
 {
 	trainingset<-read.csv(file=input,header=TRUE,sep=",")
-	trainingset$labels<-factor(trainingset$labels)
+	trainingset$label<-factor(trainingset$label)
 	trainingset<-trainingset[,c(-1,-2)] #remove the name of the proteins
 	trainingset [is.na(trainingset)]<-replaceNA
-	svm.model<-svm(labels~ .,data=trainingset,cost=100,gamma=1) #train the svm classifier
+	svm.model<-svm(label~ .,data=trainingset,cost=100,gamma=1) #train the svm classifier
 	return(svm.model)
 }
 
 ComputeAllEvidences<-function(input,output="AllEvidences-ppiPre.csv",organism="yeast", drop ="IEA", header=TRUE, sep=",") 
 {
-	wh_organism <- match.arg(organism, c("human", "fly", "mouse", "rat", "yeast", "zebrafish", "worm", "arabidopsis", "ecolik12", "bovine","canine","anopheles","ecsakai","chicken","chimp","malaria","rhesus","pig","xenopus"))
+	wh_organism <- match.arg(organism, c("human", "fly", "mouse", "rat", "yeast", "zebrafish", "worm", "arabidopsis", "ecolik12", "bovine","canine","anopheles","ecsakai","chicken","chimp","malaria","rhesus","pig","xenopus", "coelicolor"))
 	dropcodes <- drop
 	inputfile<-read.csv(file=input,header=header,sep=sep)
 	positivenode<-inputfile[which(inputfile[3]==1),] 
 	graph<-graph.data.frame(positivenode,directed=FALSE)   
 	nodes<-get.vertex.attribute(graph,"name")
-	Sims<-data.frame(protein1=inputfile[1],protein2=inputfile[2],labels=inputfile[3],BPWang=0,MFWang=0,CCWang=0,BPTCSS=0,MFTCSS=0,CCTCSS=0,BPIG=0,MFIG=0,CCIG=0,KEGGSim=0,jaccard=0,AA=0,RA=0)
+	Sims<-data.frame(protein1=inputfile[1],protein2=inputfile[2],label=inputfile[3],BPWang=0,MFWang=0,CCWang=0,BPTCSS=0,MFTCSS=0,CCTCSS=0,BPIG=0,MFIG=0,CCIG=0,KEGGSim=0,jaccard=0,AA=0,RA=0)
 	i<-1
 	for(i in 1:length(inputfile[[1]]))
 	{

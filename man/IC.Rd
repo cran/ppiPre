@@ -58,8 +58,11 @@
 \alias{Info_Contents_MF_pig}
 \alias{Info_Contents_BP_pig}
 \alias{Info_Contents_CC_pig}
+\alias{Info_Contents_MF_coelicolor}
+\alias{Info_Contents_BP_coelicolor}
+\alias{Info_Contents_CC_coelicolor}
 \title{Information content of GO terms}
 \description{  
-	The information contents of GOterms, corresponding to three GO ontologies and 19 species.
+	The information contents of GOterms, corresponding to three GO ontologies and 20 species.
 }	
 \keyword{datasets}

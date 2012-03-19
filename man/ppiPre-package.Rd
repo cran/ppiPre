@@ -9,14 +9,17 @@
 	Predicting protein-protein interactions based on functional and topologic similarities
 }
 \details{
-	This package implements several functions useful for computing similarities between proteins based on their GO annotation, KEGG annotation and network topology. It integrates thees similarities to predict PPIs using an SVM classifier. Four species are supported, including Fly, Human, Worm, and Yeast.
+	This package implements several functions useful for computing similarities between proteins based on their GO annotation, KEGG annotation and network topology. It integrates thees similarities to predict PPIs using an SVM classifier. Twenty species are supported.
 \tabular{ll}{
 Package: \tab ppiPre\cr
 Type: \tab Package\cr
 Version: \tab 1.0\cr
 Date: \tab 2011-07-06\cr
-Depends:\tab AnnotationDbi, GO.db, KEGG.db, org.Sc.sgd.db, igraph, e1071\cr
-Suggests:\tab org.Ce.eg.db, org.Dm.eg.db, org.Hs.eg.db\cr
+Depends:\tab AnnotationDbi, GO.db, KEGG.db, org.Sc.sgd.db, org.Hs.eg.db, igraph, e1071\cr
+Suggests:\tab org.Ag.eg.db, org.At.tair.db, org.Bt.eg.db, org.Ce.eg.db, org.Cf.eg.db, org.Dm.eg.db,\cr 
+         \tab org.Dr.eg.db, org.EcK12.eg.db, org.EcSakai.eg.db, org.Gg.eg.db, org.Mm.eg.db,\cr
+         \tab org.Mmu.eg.db, org.Pf.plasmo.db, org.Pt.eg.db, org.Rn.eg.db, org.Sco.eg.db\cr
+         \tab org.Ss.eg.db, org.Xl.eg.db\cr
 License: \tab GPL Version 2\cr
 LazyLoad: \tab yes\cr
 }

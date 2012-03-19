@@ -13,6 +13,7 @@ KEGGSim(protein1, protein2)
 \value{ The KEGG semantic similarity, using the Jaccard index.}
 \references{
 [1] M. Kanehisa and S. Goto, "KEGG: Kyoto Encyclopedia of Genes and Genomes", Nucleic Acids Research, vol. 28, no. 1, pp. 27 -30, 2000.
+
 [2] P. Jaccard, "Etude comparative de la distribution florale dans une portion des Alpes et des Jura", Bull. Soc. Vaud. Sci. Nat, vol. 37, p. 541, 1901.
 }
 \author{

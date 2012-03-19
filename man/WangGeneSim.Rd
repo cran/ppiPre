@@ -8,7 +8,7 @@ WangGeneSim(gene1, gene2, ont = "MF", organism = "yeast", drop = "IEA")
   \item{gene1}{ Entrez gene id. }
   \item{gene2}{ Another entrez gene id. }
   \item{ont}{One of "MF", "BP", and "CC" subontologies. }
-  \item{organism}{ One of "anopheles", "arabidopsis", "bovine", "canine", "chicken", "chimp", "ecolik12", "ecsakai", "fly", "human", "malaria", "mouse", "pig", "rat", "rhesus", "worm", "xenopus", "yeast" and "zebrafish." }
+  \item{organism}{ One of "anopheles", "arabidopsis", "bovine", "canine", "chicken", "chimp", "ecolik12", "ecsakai", "fly", "human", "malaria", "mouse", "pig", "rat", "rhesus", "worm", "xenopus", "yeast", "coelicolor" and "zebrafish."}
   \item{drop}{A set of evidence codes based on which certain annotations are dropped. Use NULL to keep all GO annotations. }
 }
 \value{

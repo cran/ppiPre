@@ -1,11 +1,11 @@
-FNPre<-function(file,indicator=c("RA","AA","Jaccard"),threshold=0.1) 
+FNPre<-function(file,indicator=c("RA","AA","Jaccard"),threshold=0.1, output="FalseNegativePreResult-ppiPre.csv") 
 {
 	edges<-read.csv(file=file,header=TRUE,sep=",")
 	graph<-graph.data.frame(edges,directed=FALSE)
 	nodes<-get.vertex.attribute(graph,"name")
 	cache_jaccard<-similarity.jaccard(graph) #jaccard similarity matrix
 	x<-array(1:(length(nodes)*(length(nodes)-1)/2))	
-	TopSims<-data.frame(protein1="",protein2="",Jaccard=x,AA=x,RA=x,labels=0) 
+	TopSims<-data.frame(protein1="",protein2="",Jaccard=x,AA=x,RA=x,label=0) 
 	TopSims$protein1<-as.character(TopSims$protein1) 
 	TopSims$protein2<-as.character(TopSims$protein2) 
 	i<-1
@@ -91,7 +91,7 @@ FNPre<-function(file,indicator=c("RA","AA","Jaccard"),threshold=0.1)
 
 	#根据indicator和threshold来确定符合要求的阴性数据集
 	threshold_number=length(x)*threshold
-	simi_result<-data.frame(protein1="",protein2="",Jaccard=x,AA=x,RA=x,labels=0) 
+	simi_result<-data.frame(protein1="",protein2="",Jaccard=x,AA=x,RA=x,label=0) 
 	simi_result$protein1<-as.character(simi_result$protein1)
 	simi_result$protein2<-as.character(simi_result$protein2) 
 	
@@ -277,7 +277,7 @@ FNPre<-function(file,indicator=c("RA","AA","Jaccard"),threshold=0.1)
 	}
 	
 	z<-array(1:y)
-	simi_final<-data.frame(protein1="",protein2="",Jaccard=z,AA=z,RA=z,labels=0)
+	simi_final<-data.frame(protein1="",protein2="",Jaccard=z,AA=z,RA=z,label=0)
 	simi_final$protein1<-as.character(simi_final$protein1)
 	simi_final$protein2<-as.character(simi_final$protein2)
 	for(i in 1:y)
@@ -290,7 +290,7 @@ FNPre<-function(file,indicator=c("RA","AA","Jaccard"),threshold=0.1)
 		simi_final[[6]][i]<-simi_result[[6]][i]
 	}
         	
-	write.csv(simi_final,file="FalseNegativePreResult-ppiPre.csv",row.names=FALSE) 
+	write.csv(simi_final,file=output,row.names=FALSE) 
 }
 
 

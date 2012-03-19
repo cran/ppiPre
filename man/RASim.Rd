@@ -25,7 +25,8 @@ RASim(node1, node2, graph)
   \code{\link{JaccardSim}}
 }
 \examples{
-  edges <- data.frame(node1=c("1132", "1133", "1134", "1134", "1145", "1147", "1147", "1147"),node2=c("1134", "1134", "1145", "1147", "1147", "1148", "1149", "1150"))
+  edges <- data.frame(node1=c("1132", "1133", "1134", "1134", "1145", "1147", "1147", "1147"),
+                      node2=c("1134", "1134", "1145", "1147", "1147", "1148", "1149", "1150"))
   graph<-graph.data.frame(edges,directed=FALSE)
   RASim("1134","1147",graph)
 }

@@ -16,7 +16,7 @@ KEGGSim <- function(protein1, protein2)    # KEGG-based similarity of two protei
 }
 GOKEGGSims <- function(gene1, gene2, organism="yeast", drop ="IEA")  #KEGG- and GO-based similarity of two proteins
 {
-	wh_organism <- match.arg(organism, c("human", "fly", "mouse", "rat", "yeast", "zebrafish", "worm", "arabidopsis", "ecolik12", "bovine","canine","anopheles","ecsakai","chicken","chimp","malaria","rhesus","pig","xenopus"))
+	wh_organism <- match.arg(organism, c("human", "fly", "mouse", "rat", "yeast", "zebrafish", "worm", "arabidopsis", "ecolik12", "bovine","canine","anopheles","ecsakai","chicken","chimp","malaria","rhesus","pig","xenopus", "coelicolor"))
 
 	dropcodes <- drop
 	Sims <- data.frame(protein1=gene1,protein2=gene2,BPWang=0,MFWang=0,CCWang=0,BPTCSS=0,MFTCSS=0,CCTCSS=0,BPIG=0,MFIG=0,CCIG=0,KEGGSim=0)
@@ -37,10 +37,10 @@ GOKEGGSims <- function(gene1, gene2, organism="yeast", drop ="IEA")  #KEGG- and 
 	return(Sims)
 }
 
-GOKEGGSimsFromFile <- function(inputfile,outputfile="GOKEGGSims-ppiPre.csv",header=TRUE,sep=",",organism="yeast", drop ="IEA") ##KEGG- and GO-based similarity of protein pairs in an input file
+GOKEGGSimsFromFile <- function(input,output="GOKEGGSims-ppiPre.csv",header=TRUE,sep=",", organism="yeast", drop ="IEA") ##KEGG- and GO-based similarity of protein pairs in an input file
 {	
-	cache<-read.csv(file=inputfile,header=header,sep=sep)
-	wh_organism <- match.arg(organism, c("human", "fly", "mouse", "rat", "yeast", "zebrafish", "worm", "arabidopsis", "ecolik12", "bovine","canine","anopheles","ecsakai","chicken","chimp","malaria","rhesus","pig","xenopus"))
+	cache<-read.csv(file=input,header=header,sep=sep)
+	wh_organism <- match.arg(organism, c("human", "fly", "mouse", "rat", "yeast", "zebrafish", "worm", "arabidopsis", "ecolik12", "bovine","canine","anopheles","ecsakai","chicken","chimp","malaria","rhesus","pig","xenopus", "coelicolor"))
 
 	dropcodes <- drop
 	SimsFromFile<-data.frame(protein1=cache[1],protein2=cache[2],BPWang=0,MFWang=0,CCWang=0,BPTCSS=0,MFTCSS=0,CCTCSS=0,BPIG=0,MFIG=0,CCIG=0,KEGGSim=0)
@@ -60,13 +60,13 @@ GOKEGGSimsFromFile <- function(inputfile,outputfile="GOKEGGSims-ppiPre.csv",head
 		SimsFromFile[[12]][i]<-KEGGSim(as.character(cache[[1]][i]),as.character(cache[[2]][i]))	
 		i <- i+1
 	}
-	write.csv(SimsFromFile,file=outputfile,row.names=FALSE)
+	write.csv(SimsFromFile,file=output,row.names=FALSE)
 }
 
 `WangGeneSim` <-
 function(gene1, gene2, ont="MF", organism="yeast", drop="IEA"){
 	wh_ont <- match.arg(ont, c("MF", "BP", "CC")) 
-	wh_organism <- match.arg(organism, c("human", "fly", "mouse", "rat", "yeast", "zebrafish", "worm", "arabidopsis", "ecolik12", "bovine","canine","anopheles","ecsakai","chicken","chimp","malaria","rhesus","pig","xenopus"))
+	wh_organism <- match.arg(organism, c("human", "fly", "mouse", "rat", "yeast", "zebrafish", "worm", "arabidopsis", "ecolik12", "bovine","canine", "anopheles", "ecsakai", "chicken", "chimp", "malaria", "rhesus", "pig", "xenopus", "coelicolor"))
 
 
 	go1 <- GetOntology(gene1, organism= wh_organism, ontology= wh_ont, dropCodes=drop) 
@@ -105,7 +105,7 @@ function(gene1, gene2, ont="MF", organism="yeast", drop="IEA"){
 `WangGoSim` <-
 function(GOID1, GOID2, ont="MF", organism="yeast"){
 	wh_ont <- match.arg(ont, c("MF", "BP", "CC"))
-	wh_organism <- match.arg(organism, c("human", "fly", "mouse", "rat", "yeast", "zebrafish", "worm", "arabidopsis", "ecolik12", "bovine","canine","anopheles","ecsakai","chicken","chimp","malaria","rhesus","pig","xenopus"))
+	wh_organism <- match.arg(organism, c("human", "fly", "mouse", "rat", "yeast", "zebrafish", "worm", "arabidopsis", "ecolik12", "bovine", "canine", "anopheles", "ecsakai", "chicken", "chimp", "malaria", "rhesus", "pig", "xenopus", "coelicolor"))
 
 	sim <- WangMethod(GOID1, GOID2, ont=wh_ont, wh_organism) 
 	sim <- unname(sim, force=TRUE)
@@ -239,55 +239,88 @@ TCSSGetOffsprings <- function(ont="MF") {
 }
 
 CheckAnnotationPackage <- function(species){
-	pkgname <- switch (species,
-		human = "org.Hs.eg.db",
-		fly = "org.Dm.eg.db",
-		mouse = "org.Mm.eg.db",
-		rat = "org.Rn.eg.db",
-		yeast = "org.Sc.sgd.db",
-		zebrafish = "org.Dr.eg.db",
-		worm = "org.Ce.eg.db",
-		arabidopsis = "org.At.tair.db",
-		ecolik12 = "org.EcK12.eg.db", 
-		bovine	= "org.Bt.eg.db",
-		canine	= "org.Cf.eg.db", 
-		anopheles	=	"org.Ag.eg.db", 
-		ecsakai	=	"org.EcSakai.eg.db", 
-		chicken	=	"org.Gg.eg.db", 
-		chimp	=	"org.Pt.eg.db", 
-		malaria	=	"org.Pf.plasmo.db", 
-		rhesus	=	"org.Mmu.eg.db", 
-		pig	= 	"org.Ss.eg.db", 
-		xenopus	=	"org.Xl.eg.db"
-	)
-	p <- installed.packages() 
-	pn <- p[,1] 
-	if (sum(pn==pkgname) == 0) {
-		print("The corresponding annotation package is downloading.")
-		source("http://bioconductor.org/biocLite.R")
-		biocLite(pkgname)
-	}
-	switch (species,
-		human = library("org.Hs.eg.db"),
-		fly = library("org.Dm.eg.db"),
-		mouse = library("org.Mm.eg.db"),
-		rat = library("org.Rn.eg.db"),
-		yeast = library("org.Sc.sgd.db"),
-		zebrafish = library("org.Dr.eg.db"),
-		worm = library("org.Ce.eg.db"),
-		arabidopsis = library("org.At.tair.db"),
-		ecolik12 = library("org.EcK12.eg.db"),
-		bovine	= library("org.Bt.eg.db"),
-		canine	= library("org.Cf.eg.db"), 
-		anopheles	=	library("org.Ag.eg.db"), 
-		ecsakai	=	library("org.EcSakai.eg.db"), 
-		chicken	=	library("org.Gg.eg.db"), 
-		chimp	=	library("org.Pt.eg.db"), 
-		malaria	=	library("org.Pf.plasmo.db"), 
-		rhesus	=	library("org.Mmu.eg.db"), 
-		pig	= library("org.Ss.eg.db"), 
-		xenopus	=	library("org.Xl.eg.db")	
-	)
+# 	pkgname <- switch (species,
+# 		human = "org.Hs.eg.db",
+# 		fly = "org.Dm.eg.db",
+# 		mouse = "org.Mm.eg.db",
+# 		rat = "org.Rn.eg.db",
+# 		yeast = "org.Sc.sgd.db",
+# 		zebrafish = "org.Dr.eg.db",
+# 		worm = "org.Ce.eg.db",
+# 		arabidopsis = "org.At.tair.db",
+# 		ecolik12 = "org.EcK12.eg.db", 
+# 		bovine	= "org.Bt.eg.db",
+# 		canine	= "org.Cf.eg.db", 
+# 		anopheles	=	"org.Ag.eg.db", 
+# 		ecsakai	=	"org.EcSakai.eg.db", 
+# 		chicken	=	"org.Gg.eg.db", 
+# 		chimp	=	"org.Pt.eg.db", 
+# 		malaria	=	"org.Pf.plasmo.db", 
+# 		rhesus	=	"org.Mmu.eg.db", 
+# 		pig	= 	"org.Ss.eg.db", 
+# 		xenopus	=	"org.Xl.eg.db",
+# 		coelicolor	=	"org.Sco.eg.db"
+# 	)
+	if (species == "human")
+		if(!require(org.Hs.eg.db))
+			stop("The package org.Hs.eg.db is needed.")
+ 	if (species == "yeast")
+		if(!require(org.Sc.sgd.db))
+			stop("The package org.Sc.sgd.db is needed.")
+ 	if (species == "fly")
+		if(!require(org.Dm.eg.db))
+			stop("The package org.Dm.eg.db is needed.")
+ 	if (species == "mouse")
+		if(!require(org.Mm.eg.db))
+			stop("The package org.Mm.eg.db is needed.")
+ 	if (species == "rat")
+		if(!require(org.Rn.eg.db))
+			stop("The package org.Rn.eg.db is needed.")
+ 	if (species == "zebrafish")
+		if(!require(org.Dr.eg.db))
+			stop("The package org.Dr.eg.db is needed.")
+ 	if (species == "worm")
+		if(!require(org.Ce.eg.db))
+			stop("The package org.Ce.eg.db is needed.")
+ 	if (species == "arabidopsis")
+		if(!require(org.At.tair.db))
+			stop("The package org.At.tair.db is needed.")
+ 	if (species == "ecolik12")
+		if(!require(org.EcK12.eg.db))
+			stop("The package org.EcK12.eg.db is needed.")
+ 	if (species == "bovine")
+		if(!require(org.Bt.eg.db))
+			stop("The package org.Bt.eg.db is needed.")
+ 	if (species == "canine")
+		if(!require(org.Cf.eg.db))
+			stop("The package org.Cf.eg.db is needed.")
+ 	if (species == "anopheles")
+		if(!require(org.Ag.eg.db))
+			stop("The package org.Ag.eg.db is needed.")
+ 	if (species == "ecsakai")
+		if(!require(org.EcSakai.eg.db))
+			stop("The package org.EcSakai.eg.db is needed.")
+ 	if (species == "chicken")
+		if(!require(org.Gg.eg.db))
+			stop("The package org.Gg.eg.db is needed.")
+ 	if (species == "chimp")
+		if(!require(org.Pt.eg.db))
+			stop("The package org.Pt.eg.db is needed.")
+ 	if (species == "malaria")
+		if(!require(org.Pf.plasmo.db))
+			stop("The package org.Pf.plasmo.db is needed.")
+ 	if (species == "rhesus")
+		if(!require(org.Mmu.eg.db))
+			stop("The package org.Mmu.eg.db is needed.")
+ 	if (species == "pig")
+		if(!require(org.Ss.eg.db))
+			stop("The package org.Ss.eg.db is needed.")
+ 	if (species == "xenopus")
+		if(!require(org.Xl.eg.db))
+			stop("The package org.Xl.eg.db is needed.")
+ 	if (species == "coelicolor")
+		if(!require(org.Sco.eg.db))
+			stop("The package org.Sco.eg.db is needed.")
 }
 
 GetGOMap <- function(organism="yeast") {
@@ -312,7 +345,8 @@ GetGOMap <- function(organism="yeast") {
 		malaria	=	"Pf", 
 		rhesus	=	"Mmu", 
 		pig	= "Ss", 
-		xenopus	=	"Xl"
+		xenopus	=	"Xl",
+		coelicolor	=	"Sco"
 	)
 
 	gomap <- switch(organism,
@@ -334,7 +368,8 @@ GetGOMap <- function(organism="yeast") {
 		malaria	=	org.Pf.plasmoGO, 
 		rhesus	=	org.Mmu.egGO, 
 		pig	= org.Ss.egGO, 
-		xenopus	=	org.Xl.egGO		
+		xenopus	=	org.Xl.egGO,	
+		coelicolor	=	org.Sco.egGO
 	)
 
 	assign(eval(species), gomap, envir=ppiPreEnv) 
@@ -361,7 +396,8 @@ GetGOMap <- function(organism="yeast") {
 		malaria	=	"Pf", 
 		rhesus	=	"Mmu", 
 		pig	= "Ss", 
-		xenopus	=	"Xl"
+		xenopus	=	"Xl",
+		coelicolor	=	"Sco"
 	)
 
 	if (!exists(species, envir=ppiPreEnv)) {
@@ -392,7 +428,7 @@ GetGOMap <- function(organism="yeast") {
 TCSSComputeIC <- function(dropCodes="IEA", ont, organism) {
 print("Calulating IC...")
 	wh_ont <- match.arg(ont, c("MF", "BP", "CC"))
-	wh_organism <- match.arg(organism, c("human", "fly", "mouse", "rat", "yeast", "zebrafish", "worm", "arabidopsis", "ecolik12", "bovine","canine","anopheles","ecsakai","chicken","chimp","malaria","rhesus","pig","xenopus"))
+	wh_organism <- match.arg(organism, c("human", "fly", "mouse", "rat", "yeast", "zebrafish", "worm", "arabidopsis", "ecolik12", "bovine","canine","anopheles","ecsakai","chicken","chimp","malaria","rhesus","pig","xenopus", "coelicolor"))
 	CheckAnnotationPackage(wh_organism)
 	gomap <- switch(organism,
 		human = org.Hs.egGO,
@@ -413,7 +449,8 @@ print("Calulating IC...")
 		malaria	=	org.Pf.plasmoGO, 
 		rhesus	=	org.Mmu.egGO, 
 		pig	= org.Ss.egGO, 
-		xenopus	=	org.Xl.egGO		
+		xenopus	=	org.Xl.egGO,		
+		coelicolor	=	org.Sco.egGO
 	)
 
 	mapped_genes <- mappedkeys(gomap)
@@ -457,7 +494,7 @@ print("done...")
 }
 rebuildICdata <- function(){
 	ont <- c("MF","CC", "BP")
-	species <- c("human", "rat", "mouse", "fly", "yeast", "zebrafish", "arabidopsis","worm", "ecolik12", "bovine","canine","anopheles","ecsakai","chicken","chimp","malaria","rhesus","pig","xenopus") 
+	species <- c("human", "rat", "mouse", "fly", "yeast", "zebrafish", "arabidopsis","worm", "ecolik12", "bovine","canine","anopheles","ecsakai","chicken","chimp","malaria","rhesus","pig","xenopus","coelicolor") 
 	cat("------------------------------------\n")
 	cat("calulating Information Content...\nSpecies:\t\tOntology\n")
 	for (i in ont) {
@@ -524,7 +561,7 @@ GetLatestCommonAncestor<-function(GOID1, GOID2, ont, organism){
 TCSSCompute_ICA<- function(dropCodes="IEA", ont, organism) {
 
   	wh_ont <- match.arg(ont, c("MF", "BP", "CC"))
-	wh_organism <- match.arg(organism, c("human", "fly", "mouse", "rat", "yeast", "zebrafish", "worm", "arabidopsis", "ecolik12", "bovine","canine","anopheles","ecsakai","chicken","chimp","malaria","rhesus","pig","xenopus"))
+	wh_organism <- match.arg(organism, c("human", "fly", "mouse", "rat", "yeast", "zebrafish", "worm", "arabidopsis", "ecolik12", "bovine","canine","anopheles","ecsakai","chicken","chimp","malaria","rhesus","pig","xenopus","coelicolor"))
 
 	ICA.name <- paste(wh_organism,wh_ont,"ICA",sep="_")
 	if (exists(ICA.name, envir=ppiPreEnv)) {
@@ -551,7 +588,8 @@ TCSSCompute_ICA<- function(dropCodes="IEA", ont, organism) {
 		malaria	=	org.Pf.plasmoGO, 
 		rhesus	=	org.Mmu.egGO, 
 		pig	= org.Ss.egGO, 
-		xenopus	=	org.Xl.egGO		
+		xenopus	=	org.Xl.egGO,	
+		coelicolor	=	org.Sco.egGO	
 	)
 	mapped_genes <- mappedkeys(gomap)
 	gomap = AnnotationDbi::as.list(gomap[mapped_genes])
@@ -618,7 +656,7 @@ TCSSCompute_ICA<- function(dropCodes="IEA", ont, organism) {
 function(gene1, gene2, ont="MF", organism="yeast", drop="IEA"){
 
 	wh_ont <- match.arg(ont, c("MF", "BP", "CC")) 
-	wh_organism <- match.arg(organism, c("human", "fly", "mouse", "rat", "yeast", "zebrafish", "worm", "arabidopsis", "ecolik12", "bovine","canine","anopheles","ecsakai","chicken","chimp","malaria","rhesus","pig","xenopus"))
+	wh_organism <- match.arg(organism, c("human", "fly", "mouse", "rat", "yeast", "zebrafish", "worm", "arabidopsis", "ecolik12", "bovine","canine","anopheles","ecsakai","chicken","chimp","malaria","rhesus","pig","xenopus","coelicolor"))
 
 	go1 <- GetOntology(gene1, organism= wh_organism, ontology= wh_ont, dropCodes=drop) 
 	go2 <- GetOntology(gene2, organism= wh_organism, ontology= wh_ont, dropCodes=drop)
@@ -677,7 +715,7 @@ GetGOParents <- function(ont="MF") {
 
 IntelliGOInverseAnnotationFrequency<-function(dropCodes="IEA", goid,ont,organism){ 
 	wh_ont <- match.arg(ont, c("MF", "BP", "CC"))
-	wh_organism <- match.arg(organism, c("human", "fly", "mouse", "rat", "yeast", "zebrafish", "worm", "arabidopsis", "ecolik12", "bovine","canine","anopheles","ecsakai","chicken","chimp","malaria","rhesus","pig","xenopus"))
+	wh_organism <- match.arg(organism, c("human", "fly", "mouse", "rat", "yeast", "zebrafish", "worm", "arabidopsis", "ecolik12", "bovine","canine","anopheles","ecsakai","chicken","chimp","malaria","rhesus","pig","xenopus","coelicolor"))
 
 	CheckAnnotationPackage(wh_organism)
 	gomap <- switch(wh_organism,
@@ -699,7 +737,8 @@ IntelliGOInverseAnnotationFrequency<-function(dropCodes="IEA", goid,ont,organism
 		malaria	=	org.Pf.plasmoGO, 
 		rhesus	=	org.Mmu.egGO, 
 		pig	= org.Ss.egGO, 
-		xenopus	=	org.Xl.egGO		
+		xenopus	=	org.Xl.egGO,
+		coelicolor	=	org.Sco.egGO		
 	)
 
 	if (!is.null(dropCodes)){
@@ -729,7 +768,8 @@ IntelliGOInverseAnnotationFrequency<-function(dropCodes="IEA", goid,ont,organism
 		malaria	=	length(org.Pf.plasmoGO2ORF[[goid]]), 
 		rhesus	=	length(org.Mmu.egGO2EG[[goid]]), 
 		pig	= length(org.Ss.egGO2EG[[goid]]), 
-		xenopus	=	length(org.Xl.egGO2EG[[goid]])
+		xenopus	=	length(org.Xl.egGO2EG[[goid]]),
+		coelicolor	=	length(org.Sco.egGO2EG[[goid]])
 	)
 	Gtot <- length(mappedkeys(gomap))
  	IAF <- log(Gtot/Gti)	
@@ -791,7 +831,7 @@ IntelliGOGOSim<-function(GOID1,GOID2,w1,w2,ont,organsim){
 `IntelliGOGeneSim` <-
 function(gene1, gene2, w1=1,w2=1,ont="MF", organism="yeast", drop="IEA"){
 	wh_ont <- match.arg(ont, c("MF", "BP", "CC"))
-	wh_organism <- match.arg(organism, c("human", "fly", "mouse", "rat", "yeast", "zebrafish", "worm", "arabidopsis", "ecolik12", "bovine","canine","anopheles","ecsakai","chicken","chimp","malaria","rhesus","pig","xenopus"))
+	wh_organism <- match.arg(organism, c("human", "fly", "mouse", "rat", "yeast", "zebrafish", "worm", "arabidopsis", "ecolik12", "bovine","canine","anopheles","ecsakai","chicken","chimp","malaria","rhesus","pig","xenopus","coelicolor"))
 
 	go1 <- GetOntology(gene1, organism= wh_organism, ontology= wh_ont, dropCodes=drop) 
 	go2 <- GetOntology(gene2, organism= wh_organism, ontology= wh_ont, dropCodes=drop)

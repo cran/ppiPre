@@ -11,7 +11,7 @@ IntelliGOGeneSim(gene1, gene2, w1 = 1, w2 = 1, ont = "MF", organism = "yeast", d
   \item{w1}{EC weight }
   \item{w2}{EC weight }
   \item{ont}{One of "MF", "BP", and "CC" subontologies.}
-  \item{organism}{ One of "anopheles", "arabidopsis", "bovine", "canine", "chicken", "chimp", "ecolik12", "ecsakai", "fly", "human", "malaria", "mouse", "pig", "rat", "rhesus", "worm", "xenopus", "yeast" and "zebrafish." }
+  \item{organism}{ One of "anopheles", "arabidopsis", "bovine", "canine", "chicken", "chimp", "ecolik12", "ecsakai", "fly", "human", "malaria", "mouse", "pig", "rat", "rhesus", "worm", "xenopus", "yeast", "coelicolor" and "zebrafish."}
   \item{drop}{A set of evidence codes based on which certain annotations are dropped. Use NULL to keep all GO annotations.}
 }
 \value{
@@ -28,5 +28,9 @@ IntelliGOGeneSim(gene1, gene2, w1 = 1, w2 = 1, ont = "MF", organism = "yeast", d
 \seealso{
   \code{\link{TCSSGeneSim}}
   \code{\link{WangGeneSim}}
+}
+\examples{
+  #IntelliGOGeneSim("1134", "1145", ont="MF", organism="human")
+  #IntelliGOGeneSim("YOL001W", "YPL031C", ont="MF", organism="yeast")
 }
 \keyword{ manip }

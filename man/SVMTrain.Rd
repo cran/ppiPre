@@ -17,4 +17,15 @@ SVMTrain(input, replaceNA = 0)
 \seealso{
   \code{\link{SVMPredict}}
 }
+\examples{
+  #edges <- data.frame(node1=c("1132", "1133", "1134", "1134", "1145", "1147"),
+  #                    node2=c("1134", "1134", "1145", "1147", "1147", "1149"),
+  #                    label=c(1, 1, 1, 0, 0, 0))
+  #graph<-graph.data.frame(edges,directed=FALSE)
+  #samplefile <- "ppiPre-ComputeAllEvidences-sample.csv"
+  #write.csv(edges,file=samplefile,row.names=FALSE) 
+  #ComputeAllEvidences(input=samplefile,output="AllEvidences-svmtrainsample.csv",organism="human", 
+  #                    drop ="IEA", header=TRUE, sep=",") 
+  #SVMTrain("AllEvidences-svmtrainsample.csv", replaceNA=0)
+}
 \keyword{ manip }
