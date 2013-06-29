@@ -1,10 +1,18 @@
-.initial <- function() {
-	assign("ppiPreEnv", new.env(),.GlobalEnv) 
-	assign("ppiPreCache", new.env(), .GlobalEnv)
+.initial<-function(pos = 1,envir = as.environment(pos)){
+  if(!exists("ppiPreEnv") || length(ppiPreEnv)<1) {
+    print("initializing ppiPre package ...")		
+    assign("ppiPreEnv",new.env(),envir=envir)  
+    assign("ppiPreCache", new.env(),envir=envir)
+    print("finished.")
+  }
 }
 ################
 KEGGSim <- function(protein1, protein2)    # KEGG-based similarity of two proteins
 {
+
+    if(!require("KEGG.db")){
+    	stop("package KEGG.db is needed.")
+    }
 	path1 <- KEGGEXTID2PATHID[[protein1]]
 	path2 <- KEGGEXTID2PATHID[[protein2]]
 	intersec <- length(na.omit(match(path1, path2)))
@@ -376,7 +384,7 @@ GetGOMap <- function(organism="yeast") {
 }
 
 `GetOntology` <-  function(gene, organism, ontology, dropCodes) {
-	if(!exists("ppiPreEnv")) .initial() 
+	.initial() 
 	species <- switch(organism,
 		human = "Hs",
 		fly = "Dm",

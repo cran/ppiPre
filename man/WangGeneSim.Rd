@@ -1,8 +1,9 @@
 \name{WangGeneSim}
 \alias{WangGeneSim}
 \title{Semantic Similarity Between Two Genes by Wang's Method}
-\description{Given two genes, this function will calculate the Wang's Semantic Similarity between them}\usage{
-WangGeneSim(gene1, gene2, ont = "MF", organism = "yeast", drop = "IEA")
+\description{Given two genes, this function will calculate the Wang's Semantic Similarity between them}
+\usage{
+  WangGeneSim(gene1, gene2, ont = "MF", organism = "yeast", drop = "IEA")
 }
 \arguments{
   \item{gene1}{ Entrez gene id. }
@@ -19,7 +20,7 @@ WangGeneSim(gene1, gene2, ont = "MF", organism = "yeast", drop = "IEA")
 \references{
 [1] J. Z. Wang, Z. Du, R. Payattakool, P. S. Yu, and C.-F. Chen, "A new method to measure the semantic similarity of GO terms", Bioinformatics, vol. 23, no. 10, pp. 1274-1281, May. 2007.}
 \author{
-	Yue Deng <anfdeng@163.com>
+  Yue Deng <anfdeng@163.com>
 }
 \seealso{
   \code{\link{TCSSGeneSim}}

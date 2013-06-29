@@ -3,7 +3,8 @@
 \title{IntelliGO Semantic Similarity Between two Genes}
 \description{Given two genes, this function will calculate the IntelliGO Semantic Similarity between them}
 \usage{
-IntelliGOGeneSim(gene1, gene2, w1 = 1, w2 = 1, ont = "MF", organism = "yeast", drop = "IEA")
+IntelliGOGeneSim(gene1, gene2, w1 = 1, w2 = 1, ont = "MF", 
+                 organism = "yeast", drop = "IEA")
 }
 \arguments{
   \item{gene1}{ Entrez gene id. }

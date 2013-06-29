@@ -22,7 +22,7 @@ GOKEGGSimsFromFile(input, output = "GOKEGGSims-ppiPre.csv", header = TRUE, sep =
 [3] S. Jain and G. Bader, "An improved method for scoring protein-protein interactions using semantic similarity within the gene ontology", BMC Bioinformatics, vol. 11, no. 1, p. 562, 2010.
 }
 \author{
-	Yue Deng <anfdeng@163.com>
+  Yue Deng <anfdeng@163.com>
 }
 \seealso{
   \code{\link{TCSSGeneSim}}

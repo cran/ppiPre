@@ -33,8 +33,8 @@ TopologicSims(inputfile, outputfile = "TopologicSims-ppiPre.csv", header = TRUE,
   graph<-graph.data.frame(edges,directed=FALSE)
   samplefile <- "ppiPre-TopologicSims-sample.csv"
   write.csv(edges,file=samplefile,row.names=FALSE) 
-  TopologicSims(samplefile,outputfile="TopologicSims-ppiPre.csv", header=TRUE, sep=",") 
-  result<-read.csv(file="TopologicSims-ppiPre.csv")
+  TopologicSims(samplefile,outputfile="TopologicSimstest-ppiPre.csv", header=TRUE, sep=",") 
+  result<-read.csv(file="TopologicSimstest-ppiPre.csv")
   print(result)
 }
 \keyword{ manip }

@@ -2,12 +2,4 @@
 exportPattern(".")
 
 # Import all packages listed as Imports or Depends
-import(
-  AnnotationDbi,
-  GO.db,
-  KEGG.db,
-  org.Sc.sgd.db,
-  igraph,
-  e1071,
-  org.Hs.eg.db
-)
+import(utils,AnnotationDbi,igraph,e1071,GO.db,org.Sc.sgd.db,org.Hs.eg.db)
