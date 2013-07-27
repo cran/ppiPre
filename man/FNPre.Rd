@@ -30,7 +30,7 @@ FNPre(file,indicator=c("RA","AA","Jaccard"),threshold=0.1,
 }
 \examples{
   edges <- data.frame(node1=c("1132", "1133", "1134"),node2=c("1134", "1134", "1145"))
-  graph<-graph.data.frame(edges,directed=FALSE)
+  graph<-igraph::graph.data.frame(edges,directed=FALSE)
   samplefile <- "ppiPre-FNPre-sample.csv"
   write.csv(edges,file=samplefile,row.names=FALSE) 
   FNPre(file=samplefile, indicator = c("RA", "AA"), threshold = 0.1)

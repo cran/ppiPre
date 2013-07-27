@@ -33,7 +33,7 @@ GOKEGGSimsFromFile(input, output = "GOKEGGSims-ppiPre.csv", header = TRUE, sep =
 \examples{
   #edges <- data.frame(node1=c("1132", "1133", "1134", "1134", "1145", "1147"),
   #                    node2=c("1134", "1134", "1145", "1147", "1147", "1149"))
-  #graph<-graph.data.frame(edges,directed=FALSE)
+  #graph<-igraph::graph.data.frame(edges,directed=FALSE)
   #samplefile <- "ppiPre-GOKEGGSimsFromFile-sample.csv"
   #write.csv(edges,file=samplefile,row.names=FALSE) 
   #GOKEGGSimsFromFile(input=samplefile,output="GOKEGGSims-ppiPre.csv", header=TRUE, sep=",",

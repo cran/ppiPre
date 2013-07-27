@@ -30,7 +30,7 @@ TopologicSims(inputfile, outputfile = "TopologicSims-ppiPre.csv", header = TRUE,
 \examples{
   edges <- data.frame(node1=c("1132", "1133", "1134", "1134", "1145", "1147", "1147", "1147"),
                       node2=c("1134", "1134", "1145", "1147", "1147", "1148", "1149", "1150"))
-  graph<-graph.data.frame(edges,directed=FALSE)
+  graph<-igraph::graph.data.frame(edges,directed=FALSE)
   samplefile <- "ppiPre-TopologicSims-sample.csv"
   write.csv(edges,file=samplefile,row.names=FALSE) 
   TopologicSims(samplefile,outputfile="TopologicSimstest-ppiPre.csv", header=TRUE, sep=",") 

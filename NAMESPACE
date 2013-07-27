@@ -2,4 +2,10 @@
 exportPattern(".")
 
 # Import all packages listed as Imports or Depends
-import(utils,AnnotationDbi,igraph,e1071,GO.db,org.Sc.sgd.db,org.Hs.eg.db)
+#import(utils,AnnotationDbi,igraph,e1071)
+importFrom(igraph,graph.data.frame)
+importFrom(igraph,degree)
+importFrom(igraph,get.vertex.attribute)
+importFrom(igraph,neighborhood)
+importFrom(igraph,similarity.jaccard)
+#importFrom(e1071,svm)

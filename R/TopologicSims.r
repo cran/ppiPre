@@ -1,6 +1,6 @@
 FNPre<-function(file,indicator=c("RA","AA","Jaccard"),threshold=0.1, output="FalseNegativePreResult-ppiPre.csv") 
 {
-       require("igraph")
+       #if(!require("igraph")){ stop("package igraph is needed.")}
 	edges<-read.csv(file=file,header=TRUE,sep=",")
 	graph<-graph.data.frame(edges,directed=FALSE)
 	nodes<-get.vertex.attribute(graph,"name")
@@ -298,7 +298,8 @@ FNPre<-function(file,indicator=c("RA","AA","Jaccard"),threshold=0.1, output="Fal
 
 JaccardSim <- function(node1, node2,graph)    #Jaccard similarity of two nodes
 {
-      require("igraph")
+       #if(!require("igraph")){ stop("package igraph is needed.")}
+
 	nodes<-get.vertex.attribute(graph,"name")
 	neighbor1 <- neighborhood(graph,1,node1) #get neighbors of node1 including node1 itself
 	neighbor1[[1]][1]<-length(nodes)+1  #remove the node itself
@@ -311,7 +312,7 @@ JaccardSim <- function(node1, node2,graph)    #Jaccard similarity of two nodes
 
 AASim<- function(node1,node2,graph) #AA similarity of two nodes
 {
-      require("igraph", quietly=TRUE)
+       #if(!require("igraph")){ stop("package igraph is needed.")}
 	nodes<-get.vertex.attribute(graph,"name")	
 	neighbor1<-neighborhood(graph,1,node1)
 	neighbor1[[1]][1]<-length(nodes)+1 
@@ -330,7 +331,7 @@ AASim<- function(node1,node2,graph) #AA similarity of two nodes
 
 RASim<-function(node1,node2,graph) #RA similarity of two nodes
 {
-       require("igraph", quietly=TRUE)
+       #if(!require("igraph")){ stop("package igraph is needed.")}   
        nodes<-get.vertex.attribute(graph,"name")	
 	neighbor1<-neighborhood(graph,1,node1)
 	neighbor1[[1]][1]<-length(nodes)+1 
@@ -349,7 +350,7 @@ RASim<-function(node1,node2,graph) #RA similarity of two nodes
 
 TopologicSims<-function(inputfile,outputfile="TopologicSims-ppiPre.csv", header=TRUE, sep=",") 
 {
-       require("igraph")
+       #if(!require("igraph")){ stop("package igraph is needed.")}
 	proteinname<-read.csv(file=inputfile,header=header,sep=sep)
 	graph<-graph.data.frame(proteinname,directed=FALSE)
      	sims<-data.frame(protein1=proteinname[1],protein2=proteinname[2],Jaccard=0,AA=0,RA=0)

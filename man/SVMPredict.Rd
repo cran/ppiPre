@@ -32,7 +32,7 @@ SVMPredict(training_set,predict_set,output="falsePPIs-ppiPre.csv",organism="yeas
   #edges <- data.frame(node1=c("1132", "1133", "1134", "1134", "1146", "1147"),
   #                    node2=c("1133", "1134", "1142", "1147", "1147", "1149"),
   #                    label=c(1, 0, 1, 0, 1, 0))
-  #graph<-graph.data.frame(edges,directed=FALSE)
+  #graph<-igraph::graph.data.frame(edges,directed=FALSE)
   #predictsample <- "ppiPre-SVMPredict-predictsample.csv"
   #write.csv(edges,file=predictsample,row.names=FALSE) 
   #SVMPredict(trainsample, predictsample, organism="human", replaceNA=0)

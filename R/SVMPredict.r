@@ -25,7 +25,7 @@ SVMTrain<-function(input, replaceNA = 0)
 	trainingset$label<-factor(trainingset$label)
 	trainingset<-trainingset[,c(-1,-2)] #remove the name of the proteins
 	trainingset [is.na(trainingset)]<-replaceNA
-	svm.model<-svm(label~ .,data=trainingset,cost=100,gamma=1) #train the svm classifier
+	svm.model<-e1071::svm(label~ .,data=trainingset,cost=100,gamma=1) #train the svm classifier
 	return(svm.model)
 }
 
@@ -41,7 +41,7 @@ ComputeAllEvidences<-function(input,output="AllEvidences-ppiPre.csv",organism="y
 	i<-1
 	for(i in 1:length(inputfile[[1]]))
 	{
-		print(paste("Computing evidences",as.character(Sims[[1]][i]),as.character(Sims[[2]][i])))
+		message(paste("Computing evidences",as.character(Sims[[1]][i]),as.character(Sims[[2]][i])))
 		Sims[[4]][i]<-WangGeneSim(as.character(Sims[[1]][i]),as.character(Sims[[2]][i]),ont="BP", organism=wh_organism, drop <- dropcodes )$geneSim
      	 	Sims[[5]][i]<-WangGeneSim(as.character(Sims[[1]][i]),as.character(Sims[[2]][i]),ont="MF", organism=wh_organism,drop <- dropcodes )$geneSim
       		Sims[[6]][i]<-WangGeneSim(as.character(Sims[[1]][i]),as.character(Sims[[2]][i]),ont="CC", organism=wh_organism,drop <- dropcodes )$geneSim

@@ -1,25 +1,23 @@
 .initial<-function(pos = 1,envir = as.environment(pos)){
   if(!exists("ppiPreEnv") || length(ppiPreEnv)<1) {
-    print("initializing ppiPre package ...")		
+    packageStartupMessage("initializing ppiPre...")
     assign("ppiPreEnv",new.env(),envir=envir)  
     assign("ppiPreCache", new.env(),envir=envir)
-    print("finished.")
+    packageStartupMessage("done")
   }
 }
 ################
 KEGGSim <- function(protein1, protein2)    # KEGG-based similarity of two proteins
 {
 
-    if(!require("KEGG.db")){
-    	stop("package KEGG.db is needed.")
-    }
-	path1 <- KEGGEXTID2PATHID[[protein1]]
-	path2 <- KEGGEXTID2PATHID[[protein2]]
-	intersec <- length(na.omit(match(path1, path2)))
+  if(!require("KEGG.db")){ stop("package KEGG.db is needed.")}
+  Pathway1 <- KEGG.db::KEGGEXTID2PATHID[[protein1]]
+	Pathway2 <- KEGG.db::KEGGEXTID2PATHID[[protein2]]
+	intersec <- length(na.omit(match(Pathway1, Pathway2)))
 	if(intersec==0)
 		sim<-0
 	else
-		sim<-intersec/(length(path1)+length(path2)-intersec)
+		sim<-intersec/(length(Pathway1)+length(Pathway2)-intersec)
 	return(sim)
 }
 GOKEGGSims <- function(gene1, gene2, organism="yeast", drop ="IEA")  #KEGG- and GO-based similarity of two proteins
@@ -55,7 +53,7 @@ GOKEGGSimsFromFile <- function(input,output="GOKEGGSims-ppiPre.csv",header=TRUE,
 	i<-1
 	for(n in 1:length(cache[[1]]))
 	{
-		print(paste("Computing GO- & KEGG-based similarities of",as.character(cache[[1]][i]),"and", as.character(cache[[2]][i])))
+		message(paste("Computing GO- & KEGG-based similarities of",as.character(cache[[1]][i]),"and", as.character(cache[[2]][i])))
 		SimsFromFile[[3]][i]<-WangGeneSim(as.character(cache[[1]][i]),as.character(cache[[2]][i]),ont="BP",organism=wh_organism,drop = dropcodes )$geneSim
      	 	SimsFromFile[[4]][i]<-WangGeneSim(as.character(cache[[1]][i]),as.character(cache[[2]][i]),ont="MF",organism=wh_organism,drop = dropcodes )$geneSim
       		SimsFromFile[[5]][i]<-WangGeneSim(as.character(cache[[1]][i]),as.character(cache[[2]][i]),ont="CC",organism=wh_organism,drop = dropcodes )$geneSim
@@ -97,11 +95,9 @@ function(gene1, gene2, ont="MF", organism="yeast", drop="IEA"){
 			scores[i,j] <- WangGoSim(go1[i], go2[j], wh_ont, wh_organism)
 		}
 	}
-#原始	if (!sum(!is.na(scores))) return (NA)	
        if (!sum(!is.na(scores))) return (list(geneSim=NA, GO1=go1, GO2=go2)) 
 
 	if (n ==1 || m == 1) {
-#原始		return (max(scores))
 		return (list(geneSim=max(scores), GO1=go1, GO2=go2)) 
 	}	
 	sim <- (sum(sapply(1:m, function(x) {max(scores[x,], na.rm=TRUE)})) + sum(sapply(1:n, function(x) {max(scores[,x], na.rm=TRUE)})))/(m+n)	
@@ -209,9 +205,9 @@ TCSSGetChildren <- function(ont="MF") {
 	)	
 		
 	Children <- switch(ont,
-		MF = AnnotationDbi::as.list(GOMFCHILDREN) ,
-		BP = AnnotationDbi::as.list(GOBPCHILDREN) , 
-		CC = AnnotationDbi::as.list(GOCCCHILDREN)	
+		MF = AnnotationDbi::as.list(GO.db::GOMFCHILDREN) ,
+		BP = AnnotationDbi::as.list(GO.db::GOBPCHILDREN) , 
+		CC = AnnotationDbi::as.list(GO.db::GOCCCHILDREN)	
 	)
 	assign(eval(wh_Children), Children, envir=ppiPreEnv)
 }
@@ -224,9 +220,9 @@ TCSSGetAncestors <- function(ont="MF") {
 		CC = "CCAncestors"	
 	)		
 	Ancestors <- switch(ont,
-		MF = AnnotationDbi::as.list(GOMFANCESTOR) ,
-		BP = AnnotationDbi::as.list(GOBPANCESTOR) , 
-		CC = AnnotationDbi::as.list(GOCCANCESTOR)	
+		MF = AnnotationDbi::as.list(GO.db::GOMFANCESTOR) ,
+		BP = AnnotationDbi::as.list(GO.db::GOBPANCESTOR) , 
+		CC = AnnotationDbi::as.list(GO.db::GOCCANCESTOR)	
 	)
 	assign(eval(wh_Ancestors), Ancestors, envir=ppiPreEnv)
 }
@@ -239,36 +235,14 @@ TCSSGetOffsprings <- function(ont="MF") {
 		CC = "CCOffsprings"	
 	)		
 	Offsprings <- switch(ont,
-		MF = AnnotationDbi::as.list(GOMFOFFSPRING) ,
-		BP = AnnotationDbi::as.list(GOBPOFFSPRING) , 
-		CC = AnnotationDbi::as.list(GOCCOFFSPRING)	
+		MF = AnnotationDbi::as.list(GO.db::GOMFOFFSPRING) ,
+		BP = AnnotationDbi::as.list(GO.db::GOBPOFFSPRING) , 
+		CC = AnnotationDbi::as.list(GO.db::GOCCOFFSPRING)	
 	)
 	assign(eval(wh_Offsprings), Offsprings, envir=ppiPreEnv)
 }
 
 CheckAnnotationPackage <- function(species){
-# 	pkgname <- switch (species,
-# 		human = "org.Hs.eg.db",
-# 		fly = "org.Dm.eg.db",
-# 		mouse = "org.Mm.eg.db",
-# 		rat = "org.Rn.eg.db",
-# 		yeast = "org.Sc.sgd.db",
-# 		zebrafish = "org.Dr.eg.db",
-# 		worm = "org.Ce.eg.db",
-# 		arabidopsis = "org.At.tair.db",
-# 		ecolik12 = "org.EcK12.eg.db", 
-# 		bovine	= "org.Bt.eg.db",
-# 		canine	= "org.Cf.eg.db", 
-# 		anopheles	=	"org.Ag.eg.db", 
-# 		ecsakai	=	"org.EcSakai.eg.db", 
-# 		chicken	=	"org.Gg.eg.db", 
-# 		chimp	=	"org.Pt.eg.db", 
-# 		malaria	=	"org.Pf.plasmo.db", 
-# 		rhesus	=	"org.Mmu.eg.db", 
-# 		pig	= 	"org.Ss.eg.db", 
-# 		xenopus	=	"org.Xl.eg.db",
-# 		coelicolor	=	"org.Sco.eg.db"
-# 	)
 	if (species == "human")
 		if(!require(org.Hs.eg.db))
 			stop("The package org.Hs.eg.db is needed.")
@@ -434,7 +408,7 @@ GetGOMap <- function(organism="yeast") {
 }
 
 TCSSComputeIC <- function(dropCodes="IEA", ont, organism) {
-print("Calulating IC...")
+message("Calulating IC...")
 	wh_ont <- match.arg(ont, c("MF", "BP", "CC"))
 	wh_organism <- match.arg(organism, c("human", "fly", "mouse", "rat", "yeast", "zebrafish", "worm", "arabidopsis", "ecolik12", "bovine","canine","anopheles","ecsakai","chicken","chimp","malaria","rhesus","pig","xenopus", "coelicolor"))
 	CheckAnnotationPackage(wh_organism)
@@ -497,7 +471,7 @@ print("Calulating IC...")
 	cnt <- sapply(goids,function(x){ c=gocount[unlist(Offsprings[x])]; gocount[x]+sum(c[!is.na(c)])})		
 	names(cnt) <- goids	
 	IC<- -log(cnt/sum(gocount))
-print("done...")		
+message("done...")		
 	return (IC)
 }
 rebuildICdata <- function(){
@@ -515,11 +489,11 @@ rebuildICdata <- function(){
 		}
 	}
 	cat("------------------------------------\n")
-	print("done...")
+	message("done...")
 }
 
 GetLatestCommonAncestor<-function(GOID1, GOID2, ont, organism){
-#print("Calulating Latest Common Ancestor...")
+#message("Calulating Latest Common Ancestor...")
 	if(!exists("ppiPreEnv")) .initial()
 	
 	fname <- paste("Info_Contents", ont, organism, sep="_")
@@ -561,7 +535,7 @@ GetLatestCommonAncestor<-function(GOID1, GOID2, ont, organism){
 			}
 		}
 	}
-#print("done...")
+#message("done...")
 	return (LCA)
 
 }
@@ -576,28 +550,28 @@ TCSSCompute_ICA<- function(dropCodes="IEA", ont, organism) {
 		return(get(ICA.name, envir=ppiPreEnv))
 	}
 	CheckAnnotationPackage(wh_organism)
-#print("Calulating ICA...")
+#message("Calulating ICA...")
 	gomap <- switch(wh_organism,
-		human = org.Hs.egGO,
-		fly = org.Dm.egGO,
-		mouse = org.Mm.egGO,
-		rat = org.Rn.egGO,
-		yeast = org.Sc.sgdGO,
-		zebrafish = org.Dr.egGO,
-		worm = org.Ce.egGO,
-		arabidopsis = org.At.tairGO,
-		ecoli = org.EcK12.egGO,
-		bovine	= org.Bt.egGO,
-		canine	= org.Cf.egGO, 
-		anopheles	=	org.Ag.egGO, 
-		ecsakai	=	org.EcSakai.egGO, 
-		chicken	=	org.Gg.egGO, 
-		chimp	=	org.Pt.egGO, 
-		malaria	=	org.Pf.plasmoGO, 
-		rhesus	=	org.Mmu.egGO, 
-		pig	= org.Ss.egGO, 
-		xenopus	=	org.Xl.egGO,	
-		coelicolor	=	org.Sco.egGO	
+		human = org.Hs.eg.db::org.Hs.egGO,
+		fly = org.Dm.eg.db::org.Dm.egGO,
+		mouse = org.Mm.eg.db::org.Mm.egGO,
+		rat = org.Rn.eg.db::org.Rn.egGO,
+		yeast = org.Sc.sgd.db::org.Sc.sgdGO,
+		zebrafish = org.Dr.eg.db::org.Dr.egGO,
+		worm = org.Ce.eg.db::org.Ce.egGO,
+		arabidopsis = org.At.tair.db::org.At.tairGO,
+		ecoli = org.EcK12.eg.db::org.EcK12.egGO,
+		bovine	= org.Bt.eg.db::org.Bt.egGO,
+		canine	= org.Cf.eg.db::org.Cf.egGO, 
+		anopheles	=	org.Ag.eg.db::org.Ag.egGO, 
+		ecsakai	=	org.EcSakai.eg.db::org.EcSakai.egGO, 
+		chicken	=	org.Gg.eg.db::org.Gg.egGO, 
+		chimp	=	org.Pt.eg.db::org.Pt.egGO, 
+		malaria	=	org.Pf.plasmo.db::org.Pf.plasmoGO, 
+		rhesus	=	org.Mmu.eg.db::org.Mmu.egGO, 
+		pig	= org.Ss.eg.db::org.Ss.egGO, 
+		xenopus	=	org.Xl.eg.db::org.Xl.egGO,	
+		coelicolor	=	org.Sco.eg.db::org.Sco.egGO	
 	)
 	mapped_genes <- mappedkeys(gomap)
 	gomap = AnnotationDbi::as.list(gomap[mapped_genes])
@@ -635,7 +609,7 @@ TCSSCompute_ICA<- function(dropCodes="IEA", ont, organism) {
 	cnt<-cnt+1;
 	names(cnt)<-goids;
 	ICA<- -log(cnt/sum(gocount))
-#print("done...")
+#message("done...")
 	assign(eval(ICA.name), ICA, envir=ppiPreEnv)
 	return (ICA)
 }	
@@ -706,6 +680,9 @@ function(gene1, gene2, ont="MF", organism="yeast", drop="IEA"){
 
 GetGOParents <- function(ont="MF") {
 	if(!exists("ppiPreEnv")) .initial()
+       if(!require("GO.db")){
+    	  stop("package GO.db is needed.")
+       }
 
 	wh_Parents <- switch(ont,
 		MF = "MFParents",
@@ -714,9 +691,9 @@ GetGOParents <- function(ont="MF") {
 	)#wh_Parents值为CCParents
 		
 	Parents <- switch(ont,
-		MF = AnnotationDbi::as.list(GOMFPARENTS) ,
-		BP = AnnotationDbi::as.list(GOBPPARENTS) , 
-		CC = AnnotationDbi::as.list(GOCCPARENTS)	
+		MF = AnnotationDbi::as.list(GO.db::GOMFPARENTS) ,
+		BP = AnnotationDbi::as.list(GO.db::GOBPPARENTS) , 
+		CC = AnnotationDbi::as.list(GO.db::GOCCPARENTS)	
 	)
 	assign(eval(wh_Parents), Parents, envir=ppiPreEnv)
 }
@@ -727,26 +704,26 @@ IntelliGOInverseAnnotationFrequency<-function(dropCodes="IEA", goid,ont,organism
 
 	CheckAnnotationPackage(wh_organism)
 	gomap <- switch(wh_organism,
-		human = org.Hs.egGO,
-		fly = org.Dm.egGO,
-		mouse = org.Mm.egGO,
-		rat = org.Rn.egGO,
-		yeast = org.Sc.sgdGO,
-		zebrafish = org.Dr.egGO,
-		worm = org.Ce.egGO,
-		arabidopsis = org.At.tairGO,
-		ecoli = org.EcK12.egGO,
-		bovine	= org.Bt.egGO,
-		canine	= org.Cf.egGO, 
-		anopheles	=	org.Ag.egGO, 
-		ecsakai	=	org.EcSakai.egGO, 
-		chicken	=	org.Gg.egGO, 
-		chimp	=	org.Pt.egGO, 
-		malaria	=	org.Pf.plasmoGO, 
-		rhesus	=	org.Mmu.egGO, 
-		pig	= org.Ss.egGO, 
-		xenopus	=	org.Xl.egGO,
-		coelicolor	=	org.Sco.egGO		
+		human = org.Hs.eg.db::org.Hs.egGO,
+		fly = org.Dm.eg.db::org.Dm.egGO,
+		mouse = org.Mm.eg.db::org.Mm.egGO,
+		rat = org.Rn.eg.db::org.Rn.egGO,
+		yeast = org.Sc.sgd.db::org.Sc.sgdGO,
+		zebrafish = org.Dr.eg.db::org.Dr.egGO,
+		worm = org.Ce.eg.db::org.Ce.egGO,
+		arabidopsis = org.At.tair.db::org.At.tairGO,
+		ecoli = org.EcK12.eg.db::org.EcK12.egGO,
+		bovine	= org.Bt.eg.db::org.Bt.egGO,
+		canine	= org.Cf.eg.db::org.Cf.egGO, 
+		anopheles	=	org.Ag.eg.db::org.Ag.egGO, 
+		ecsakai	=	org.EcSakai.eg.db::org.EcSakai.egGO, 
+		chicken	=	org.Gg.eg.db::org.Gg.egGO, 
+		chimp	=	org.Pt.eg.db::org.Pt.egGO, 
+		malaria	=	org.Pf.plasmo.db::org.Pf.plasmoGO, 
+		rhesus	=	org.Mmu.eg.db::org.Mmu.egGO, 
+		pig	= org.Ss.eg.db::org.Ss.egGO, 
+		xenopus	=	org.Xl.eg.db::org.Xl.egGO,	
+		coelicolor	=	org.Sco.eg.db::org.Sco.egGO	
 	)
 
 	if (!is.null(dropCodes)){
@@ -758,26 +735,26 @@ IntelliGOInverseAnnotationFrequency<-function(dropCodes="IEA", goid,ont,organism
 	}
 
 	Gti <- switch(wh_organism,
-		human = length(org.Hs.egGO2EG[[goid]])	,
-		fly = length(org.Dm.egGO2EG[[goid]]),
-		yeast = length(org.Sc.sgdGO2ORF[[goid]]),
-		worm = length(org.Ce.egGO2EG[[goid]]),	
-		mouse = length(org.Mm.egGO2EG[[goid]]),
-		rat = length(org.Rn.egGO2EG[[goid]]),
-		zebrafish = length(org.Dr.egGO2EG[[goid]]),
-		arabidopsis = length(org.At.tairGO2TAIR[[goid]]),
-		ecoli = length(org.EcK12.egGO2EG[[goid]]),
-		bovine	= length(org.Bt.egGO2EG[[goid]]),
-		canine	= length(org.Cf.egGO2EG[[goid]]), 
-		anopheles	=	length(org.Ag.egGO2EG[[goid]]), 
-		ecsakai	=	length(org.EcSakai.egGO2EG[[goid]]), 
-		chicken	=	length(org.Gg.egGO2EG[[goid]]), 
-		chimp	=	length(org.Pt.egGO2EG[[goid]]), 
-		malaria	=	length(org.Pf.plasmoGO2ORF[[goid]]), 
-		rhesus	=	length(org.Mmu.egGO2EG[[goid]]), 
-		pig	= length(org.Ss.egGO2EG[[goid]]), 
-		xenopus	=	length(org.Xl.egGO2EG[[goid]]),
-		coelicolor	=	length(org.Sco.egGO2EG[[goid]])
+		human = length(org.Hs.eg.db::org.Hs.egGO2EG[[goid]])	,
+		fly = length(org.Dm.eg.db::org.Dm.egGO2EG[[goid]]),
+		yeast = length(org.Sc.sgd.db::org.Sc.sgdGO2ORF[[goid]]),
+		worm = length(org.Ce.eg.db::org.Ce.egGO2EG[[goid]]),	
+		mouse = length(org.Mm.eg.db::org.Mm.egGO2EG[[goid]]),
+		rat = length(org.Rn.eg.db::org.Rn.egGO2EG[[goid]]),
+		zebrafish = length(org.Dr.eg.db::org.Dr.egGO2EG[[goid]]),
+		arabidopsis = length(org.At.tair.db::org.At.tairGO2TAIR[[goid]]),
+		ecoli = length(org.EcK12.eg.db::org.EcK12.egGO2EG[[goid]]),
+		bovine	= length(org.Bt.eg.db::org.Bt.egGO2EG[[goid]]),
+		canine	= length(org.Cf.eg.db::org.Cf.egGO2EG[[goid]]), 
+		anopheles	=	length(org.Ag.eg.db::org.Ag.egGO2EG[[goid]]), 
+		ecsakai	=	length(org.EcSakai.eg.db::org.EcSakai.egGO2EG[[goid]]), 
+		chicken	=	length(org.Gg.eg.db::org.Gg.egGO2EG[[goid]]), 
+		chimp	=	length(org.Pt.eg.db::org.Pt.egGO2EG[[goid]]), 
+		malaria	=	length(org.Pf.plasmo.db::org.Pf.plasmoGO2ORF[[goid]]), 
+		rhesus	=	length(org.Mmu.eg.db::org.Mmu.egGO2EG[[goid]]), 
+		pig	= length(org.Ss.eg.db::org.Ss.egGO2EG[[goid]]), 
+		xenopus	=	length(org.Xl.eg.db::org.Xl.egGO2EG[[goid]]),
+		coelicolor	=	length(org.Sco.eg.db::org.Sco.egGO2EG[[goid]])
 	)
 	Gtot <- length(mappedkeys(gomap))
  	IAF <- log(Gtot/Gti)	
@@ -868,7 +845,7 @@ function(gene1, gene2, w1=1,w2=1,ont="MF", organism="yeast", drop="IEA"){
 	
 	sim <- (sum(sapply(1:m, function(x) {max(scores[x,], na.rm=TRUE)})) + sum(sapply(1:n, function(x) {max(scores[,x], na.rm=TRUE)})))/(m+n)
 	sim <- round(sim, digits=3)
-	return (list(geneSim=sim, GO1=go1, GO2=go2)) #返回值包括三部分：相似性、两个蛋白质对应的GO条目编号
+	return (list(geneSim=sim, GO1=go1, GO2=go2))
 }
 	
 #print(KEGGSim("YJL026W","YGR180C"))  #0.75

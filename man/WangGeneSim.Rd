@@ -27,7 +27,7 @@
   \code{\link{IntelliGOGeneSim}}
 }
 \examples{
-	WangGeneSim("1134", "1145", ont="MF", organism="human")
-	WangGeneSim("YOR065W", "YEL024W", ont="MF", organism="yeast")
+	#WangGeneSim("1134", "1145", ont="MF", organism="human")
+	#WangGeneSim("YOR065W", "YEL024W", ont="MF", organism="yeast")
 }
 \keyword{ manip }

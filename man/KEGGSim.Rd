@@ -24,7 +24,7 @@ KEGGSim(protein1, protein2)
   \code{\link{GOKEGGSimsFromFile}}
 }
 \examples{
-  KEGGSim("YJL026W","YGR180C")  
-  KEGGSim("1134","1145")
+  #KEGGSim("YJL026W","YGR180C")  
+  #KEGGSim("1134","1145")
 }
 \keyword{ manip }
