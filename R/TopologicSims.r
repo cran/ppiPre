@@ -1,7 +1,6 @@
 FNPre<-function(file,indicator=c("RA","AA","Jaccard"),threshold=0.1, output="FalseNegativePreResult-ppiPre.csv") 
 {
-       #if(!require("igraph")){ stop("package igraph is needed.")}
-	edges<-read.csv(file=file,header=TRUE,sep=",")
+  edges<-read.csv(file=file,header=TRUE,sep=",")
 	graph<-graph.data.frame(edges,directed=FALSE)
 	nodes<-get.vertex.attribute(graph,"name")
 	cache_jaccard<-similarity.jaccard(graph) #jaccard similarity matrix
@@ -76,7 +75,7 @@ FNPre<-function(file,indicator=c("RA","AA","Jaccard"),threshold=0.1, output="Fal
 
 	if(ifAA!="NA")
 	{
-		for(i in 1:length(x)) #分别计算两点之间的AA相似性
+		for(i in 1:length(x)) # calculate AA similarity between two nodes
 		{
 			TopSims[[4]][i]<-AASim(as.character(TopSims[[1]][i]),as.character(TopSims[[2]][i]),graph)
 		}
@@ -84,13 +83,13 @@ FNPre<-function(file,indicator=c("RA","AA","Jaccard"),threshold=0.1, output="Fal
 
 	if(ifRA!="NA")
 	{
-		for(i in 1:length(x)) #分别计算两点之间的RA相似性
+		for(i in 1:length(x)) # calculate RA similarity between two nodes
 		{
 			TopSims[[5]][i]<-RASim(as.character(TopSims[[1]][i]),as.character(TopSims[[2]][i]),graph)
 		}
 	}
 
-	#根据indicator和threshold来确定符合要求的阴性数据集
+	#build negative data set based on "indicator" and "threshold"
 	threshold_number=length(x)*threshold
 	simi_result<-data.frame(protein1="",protein2="",Jaccard=x,AA=x,RA=x,label=0) 
 	simi_result$protein1<-as.character(simi_result$protein1)
@@ -98,8 +97,8 @@ FNPre<-function(file,indicator=c("RA","AA","Jaccard"),threshold=0.1, output="Fal
 	
 	if(ifJaccard!="NA"&&ifAA=="NA"&&ifRA=="NA")  #indicator="Jaccard"
 	{
-		simi_jaccard<-TopSims[order(TopSims[,3],decreasing=TRUE),]  #将TopSims中的行，按照Jaccard的值，降序排序
-		simi_jaccard_neg <- simi_jaccard[simi_jaccard[[6]]==0,] #只取出阴性数据
+		simi_jaccard<-TopSims[order(TopSims[,3],decreasing=TRUE),]  #sort rows in TopSims based on their Jaccard value
+		simi_jaccard_neg <- simi_jaccard[simi_jaccard[[6]]==0,] #only use negative data
 		for(n in 1:threshold_number)
 		{
 			simi_result[[1]][n]<-simi_jaccard_neg [[1]][n]
@@ -116,8 +115,8 @@ FNPre<-function(file,indicator=c("RA","AA","Jaccard"),threshold=0.1, output="Fal
 
 	if(ifJaccard=="NA"&&ifAA!="NA"&&ifRA=="NA")  #indicator="AA"
 	{
-		simi_AA<-TopSims[order(TopSims[,4],decreasing=TRUE),]  #将TopSims中的行，按照AA的值，降序排序
-		simi_AA_neg <- simi_AA[simi_AA[[6]]==0,] #只取出阴性数据
+		simi_AA<-TopSims[order(TopSims[,4],decreasing=TRUE),]  #sort rows in TopSims based on their AA value
+		simi_AA_neg <- simi_AA[simi_AA[[6]]==0,] #only use negative data
 		for(n in 1:threshold_number)
 		{
 			simi_result[[1]][n]<-simi_AA_neg [[1]][n]
@@ -134,9 +133,9 @@ FNPre<-function(file,indicator=c("RA","AA","Jaccard"),threshold=0.1, output="Fal
 
 	if(ifJaccard=="NA"&&ifAA=="NA"&&ifRA!="NA")  #indicator="RA"
 	{
-		simi_RA<-TopSims[order(TopSims[,5],decreasing=TRUE),]  #将TopSims中的行，按照RA的值，降序排序
-		simi_RA_neg <- simi_RA[simi_RA[[6]]==0,] #只取出阴性数据
-		for(n in 1:threshold_number) #取阴性数据得分最高的，数目为阳性数据大小*阈值
+		simi_RA<-TopSims[order(TopSims[,5],decreasing=TRUE),]  #sort rows in TopSims based on their RA value
+		simi_RA_neg <- simi_RA[simi_RA[[6]]==0,] #only use negative data
+		for(n in 1:threshold_number) #select negative data, the number of data entries= number of positive data entries * threshold
 		{
 			simi_result[[1]][n]<-simi_RA_neg [[1]][n]
 			simi_result[[2]][n]<-simi_RA_neg [[2]][n]
@@ -153,9 +152,9 @@ FNPre<-function(file,indicator=c("RA","AA","Jaccard"),threshold=0.1, output="Fal
 	if(ifJaccard!="NA"&&ifAA!="NA"&&ifRA=="NA") #indicator=c("Jaccard","AA")
 	{
 		simi_jaccard<-TopSims[order(TopSims[,3],decreasing=TRUE),]
-		simi_jaccard_neg <- simi_jaccard[simi_jaccard[[6]]==0,] #只取出阴性数据
+		simi_jaccard_neg <- simi_jaccard[simi_jaccard[[6]]==0,] #only use negative data
 		simi_AA<-TopSims[order(TopSims[,4],decreasing=TRUE),]
-		simi_AA_neg <- simi_AA[simi_AA[[6]]==0,] #只取出阴性数据
+		simi_AA_neg <- simi_AA[simi_AA[[6]]==0,] #only use negative data
 		y<-1
 		for(n in 1:threshold_number)
     		{
@@ -181,10 +180,10 @@ FNPre<-function(file,indicator=c("RA","AA","Jaccard"),threshold=0.1, output="Fal
 	if(ifJaccard!="NA"&&ifAA=="NA"&&ifRA!="NA")   #indicator=c("Jaccard",RA)
 	{
 		simi_jaccard<-TopSims[order(TopSims[,3],decreasing=TRUE),]
-		simi_jaccard_neg <- simi_jaccard[simi_jaccard[[6]]==0,] #只取出阴性数据
+		simi_jaccard_neg <- simi_jaccard[simi_jaccard[[6]]==0,] #only use negative data
 
 		simi_RA<-TopSims[order(TopSims[,5],decreasing=TRUE),]
-		simi_RA_neg <- simi_RA[simi_RA[[6]]==0,] #只取出阴性数据
+		simi_RA_neg <- simi_RA[simi_RA[[6]]==0,] #only use negative data
 		y<-1
 		for(n in 1:threshold_number)
     		{
@@ -210,10 +209,10 @@ FNPre<-function(file,indicator=c("RA","AA","Jaccard"),threshold=0.1, output="Fal
 	if(ifJaccard=="NA"&&ifAA!="NA"&&ifRA!="NA")   #indicator=c("AA",RA)
 	{
 		simi_AA<-TopSims[order(TopSims[,4],decreasing=TRUE),]
-		simi_AA_neg <- simi_AA[simi_AA[[6]]==0,] #只取出阴性数据
+		simi_AA_neg <- simi_AA[simi_AA[[6]]==0,] #only use negative data
 
 		simi_RA<-TopSims[order(TopSims[,5],decreasing=TRUE),]
-		simi_RA_neg <- simi_RA[simi_RA[[6]]==0,] #只取出阴性数据
+		simi_RA_neg <- simi_RA[simi_RA[[6]]==0,] #only use negative data
 
 		y<-1
 		for(n in 1:threshold_number)
@@ -240,13 +239,13 @@ FNPre<-function(file,indicator=c("RA","AA","Jaccard"),threshold=0.1, output="Fal
 	if(ifJaccard!="NA"&&ifAA!="NA"&&ifRA!="NA") #indicator=c("Jaccard","AA","RA")
 	{
 		simi_jaccard<-TopSims[order(TopSims[,3],decreasing=TRUE),]
-		simi_jaccard_neg <- simi_jaccard[simi_jaccard[[6]]==0,] #只取出阴性数据
+		simi_jaccard_neg <- simi_jaccard[simi_jaccard[[6]]==0,] #only use negative data
 
 		simi_AA<-TopSims[order(TopSims[,4],decreasing=TRUE),]
-		simi_AA_neg <- simi_AA[simi_AA[[6]]==0,] #只取出阴性数据
+		simi_AA_neg <- simi_AA[simi_AA[[6]]==0,] #only use negative data
 
 		simi_RA<-TopSims[order(TopSims[,5],decreasing=TRUE),]
-		simi_RA_neg <- simi_RA[simi_RA[[6]]==0,] #只取出阴性数据
+		simi_RA_neg <- simi_RA[simi_RA[[6]]==0,] #only use negative data
 
 		y<-1
 		for(n in 1:threshold_number)

@@ -9,24 +9,27 @@
 	Predicting protein-protein interactions based on functional and topologic similarities
 }
 \details{
-	This package implements several functions useful for computing similarities between proteins based on their GO annotation, KEGG annotation and network topology. It integrates thees similarities to predict PPIs using an SVM classifier. Twenty species are supported.
+	This package integrates functions for computing similarities between proteins based on their GO annotation, KEGG annotation and PPI network topology. It integrates seven features(similarities) to predict PPIs using an SVM classifier. 
+	Some internal functions to manipulate GO.db are derived from R package GOSemSim authored by Guangchuang Yu <guangchuangyu@gmail.com> 
 \tabular{ll}{
 Package: \tab ppiPre\cr
 Type: \tab Package\cr
-Version: \tab 1.0\cr
-Date: \tab 2011-07-06\cr
-Depends:\tab AnnotationDbi, GO.db, KEGG.db, org.Sc.sgd.db, org.Hs.eg.db, igraph, e1071\cr
-Suggests:\tab org.Ag.eg.db, org.At.tair.db, org.Bt.eg.db, org.Ce.eg.db, org.Cf.eg.db, org.Dm.eg.db,\cr 
-         \tab org.Dr.eg.db, org.EcK12.eg.db, org.EcSakai.eg.db, org.Gg.eg.db, org.Mm.eg.db,\cr
-         \tab org.Mmu.eg.db, org.Pf.plasmo.db, org.Pt.eg.db, org.Rn.eg.db, org.Sco.eg.db\cr
-         \tab org.Ss.eg.db, org.Xl.eg.db\cr
-License: \tab GPL Version 2\cr
+Version: \tab 1.6\cr
+Date: \tab 2015-01-25\cr
+Depends:\tab R (>= 3.0.0)\cr
+Imports:\tab AnnotationDbi, igraph, e1071, GOSemSim, GO.db\cr
+Suggests:\tab KEGG.db, org.Hs.eg.db\cr
+Enhances:\tab org.Sc.sgd.db, org.Ag.eg.db, org.Xl.eg.db, org.Ss.eg.db,\cr
+         \tab org.At.tair.db, org.Bt.eg.db, org.Ce.eg.db, org.Cf.eg.db,\cr
+         \tab org.Dm.eg.db, org.Dr.eg.db, org.EcK12.eg.db, org.EcSakai.eg.db,\cr
+         \tab org.Gg.eg.db, org.Mm.eg.db, org.Mmu.eg.db, org.Pf.plasmo.db,\cr
+         \tab org.Pt.eg.db, org.Rn.eg.db \cr
+License: \tab GPL-2\cr
 LazyLoad: \tab yes\cr
 }
 }
 \author{
-Yue Deng
-
+Yue Deng, Rongjie Shao, Gang Wang, Yuanjun Sun, Guangchuang Yu
 Maintainer: Yue Deng <anfdeng@163.com>
 }
 \seealso{

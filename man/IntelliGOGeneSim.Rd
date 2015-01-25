@@ -12,7 +12,7 @@ IntelliGOGeneSim(gene1, gene2, w1 = 1, w2 = 1, ont = "MF",
   \item{w1}{EC weight }
   \item{w2}{EC weight }
   \item{ont}{One of "MF", "BP", and "CC" subontologies.}
-  \item{organism}{ One of "anopheles", "arabidopsis", "bovine", "canine", "chicken", "chimp", "ecolik12", "ecsakai", "fly", "human", "malaria", "mouse", "pig", "rat", "rhesus", "worm", "xenopus", "yeast", "coelicolor" and "zebrafish."}
+  \item{organism}{ One of "anopheles", "arabidopsis", "bovine", "canine", "chicken", "chimp", "ecolik12", "ecsakai", "fly", "human", "malaria", "mouse", "pig", "rat", "rhesus", "worm", "xenopus", "yeast"  and "zebrafish."}
   \item{drop}{A set of evidence codes based on which certain annotations are dropped. Use NULL to keep all GO annotations.}
 }
 \value{
@@ -22,13 +22,14 @@ IntelliGOGeneSim(gene1, gene2, w1 = 1, w2 = 1, ont = "MF",
 }
 \references{
 [1] S. Benabderrahmane, M. Smail-Tabbone, O. Poch, A. Napoli, and M.-D. Devignes, "IntelliGO: a new vector-based semantic similarity measure including annotation origin", BMC Bioinformatics, vol. 11, no. 1, p. 588, 2010.
+
+[2] G. Yu, F. Li, Y. Qin, X. Bo, Y. Wu, and S. Wang, "GOSemSim: an R package for measuring semantic similarity among GO terms and gene products", Bioinformatics, vol. 26, no. 7, pp. 976-978, Apr. 2010.
 }
 \author{
 	Yue Deng <anfdeng@163.com>
 }
 \seealso{
   \code{\link{TCSSGeneSim}}
-  \code{\link{WangGeneSim}}
 }
 \examples{
   #IntelliGOGeneSim("1134", "1145", ont="MF", organism="human")

@@ -10,7 +10,7 @@ SVMPredict(training_set,predict_set,output="falsePPIs-ppiPre.csv",organism="yeas
   \item{training_set}{ CSV format golden standard training set }
   \item{predict_set}{ PPI network to do the prediction }
   \item{output}{ CSV format file to ave the result }
-  \item{organism}{ One of "anopheles", "arabidopsis", "bovine", "canine", "chicken", "chimp", "ecolik12", "ecsakai", "fly", "human", "malaria", "mouse", "pig", "rat", "rhesus", "worm", "xenopus", "yeast", "coelicolor" and "zebrafish."}
+  \item{organism}{ One of "anopheles", "arabidopsis", "bovine", "canine", "chicken", "chimp", "ecolik12", "ecsakai", "fly", "human", "malaria", "mouse", "pig", "rat", "rhesus", "worm", "xenopus", "yeast" and "zebrafish."}
   \item{drop}{A set of evidence codes based on which certain annotations are dropped. Use NULL to keep all GO annotations.}
   \item{replaceNA}{ The value to replace NA in training and predict set. }
 }

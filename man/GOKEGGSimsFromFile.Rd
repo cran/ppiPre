@@ -11,7 +11,7 @@ GOKEGGSimsFromFile(input, output = "GOKEGGSims-ppiPre.csv", header = TRUE, sep =
   \item{output}{ Result will be saved in output file. }
   \item{header}{ If the input file contains header. }
   \item{sep}{ The separator of the input file. }
-  \item{organism}{ One of "anopheles", "arabidopsis", "bovine", "canine", "chicken", "chimp", "ecolik12", "ecsakai", "fly", "human", "malaria", "mouse", "pig", "rat", "rhesus", "worm", "xenopus", "yeast", "coelicolor" and "zebrafish."}
+  \item{organism}{ One of "anopheles", "arabidopsis", "bovine", "canine", "chicken", "chimp", "ecolik12", "ecsakai", "fly", "human", "malaria", "mouse", "pig", "rat", "rhesus", "worm", "xenopus", "yeast" and "zebrafish."}
   \item{drop}{A set of evidence codes based on which certain annotations are dropped. Use NULL to keep all GO annotations.}
 }
 \references{
@@ -20,13 +20,14 @@ GOKEGGSimsFromFile(input, output = "GOKEGGSims-ppiPre.csv", header = TRUE, sep =
 [2] J. Z. Wang, Z. Du, R. Payattakool, P. S. Yu, and C.-F. Chen, "A new method to measure the semantic similarity of GO terms", Bioinformatics, vol. 23, no. 10, pp. 1274-1281, May. 2007.
 
 [3] S. Jain and G. Bader, "An improved method for scoring protein-protein interactions using semantic similarity within the gene ontology", BMC Bioinformatics, vol. 11, no. 1, p. 562, 2010.
+
+[4] G. Yu, F. Li, Y. Qin, X. Bo, Y. Wu, and S. Wang, "GOSemSim: an R package for measuring semantic similarity among GO terms and gene products", Bioinformatics, vol. 26, no. 7, pp. 976-978, Apr. 2010.
 }
 \author{
   Yue Deng <anfdeng@163.com>
 }
 \seealso{
   \code{\link{TCSSGeneSim}}
-  \code{\link{WangGeneSim}}
   \code{\link{IntelliGOGeneSim}}
   \code{\link{GOKEGGSims}}
 }

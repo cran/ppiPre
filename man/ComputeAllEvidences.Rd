@@ -9,7 +9,7 @@ ComputeAllEvidences(input,output="AllEvidences-ppiPre.csv",organism="yeast", dro
 \arguments{
    \item{input}{ CSV format PPI network, each line of which includes two interacting proteins and another column which is 1 or 0 indicating that the interaction is positive or negative. }
    \item{output}{ Result will be saved in the output file.}
-   \item{organism}{ One of "anopheles", "arabidopsis", "bovine", "canine", "chicken", "chimp", "ecolik12", "ecsakai", "fly", "human", "malaria", "mouse", "pig", "rat", "rhesus", "worm", "xenopus", "yeast", "coelicolor" and "zebrafish".}
+   \item{organism}{ One of "anopheles", "arabidopsis", "bovine", "canine", "chicken", "chimp", "ecolik12", "ecsakai", "fly", "human", "malaria", "mouse", "pig", "rat", "rhesus", "worm", "xenopus", "yeast" and "zebrafish".}
    \item{drop}{ A set of evidence codes based on which certain annotations are dropped. Use NULL to keep all GO annotations.}
    \item{header}{ If the input file contains header. }
    \item{sep}{ The separator of the input file. }
@@ -28,13 +28,14 @@ ComputeAllEvidences(input,output="AllEvidences-ppiPre.csv",organism="yeast", dro
 [6] P. Jaccard, "Etude comparative de la distribution florale dans une portion des Alpes et des Jura", Bull. Soc. Vaud. Sci. Nat, vol. 37, p. 541, 1901.
 
 [7] M. Kanehisa and S. Goto, "KEGG: Kyoto Encyclopedia of Genes and Genomes", Nucleic Acids Research, vol. 28, no. 1, pp. 27 -30, 2000.
+
+[8] G. Yu, F. Li, Y. Qin, X. Bo, Y. Wu, and S. Wang, "GOSemSim: an R package for measuring semantic similarity among GO terms and gene products", Bioinformatics, vol. 26, no. 7, pp. 976-978, Apr. 2010.
 }
 \author{
 	Yue Deng <anfdeng@163.com>
 }
 \seealso{
   \code{\link{TCSSGeneSim}}
-  \code{\link{WangGeneSim}}
   \code{\link{IntelliGOGeneSim}}
   \code{\link{GOKEGGSims}}
 }

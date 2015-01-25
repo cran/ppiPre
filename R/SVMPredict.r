@@ -1,6 +1,6 @@
 SVMPredict<-function(training_set,predict_set,output="falsePPIs-ppiPre.csv",organism="yeast",drop ="IEA", replaceNA=0)
 {
-	wh_organism <- match.arg(organism, c("human", "fly", "mouse", "rat", "yeast", "zebrafish", "worm", "arabidopsis", "ecolik12", "bovine","canine","anopheles","ecsakai","chicken","chimp","malaria","rhesus","pig","xenopus", "coelicolor"))
+	wh_organism <- match.arg(organism, c("human", "fly", "mouse", "rat", "yeast", "zebrafish", "worm", "arabidopsis", "ecolik12", "bovine","canine","anopheles","ecsakai","chicken","chimp","malaria","rhesus","pig","xenopus"))
 	dropcodes <- drop
 	trainingsetevidences <- paste("AllEvidences-",training_set)
 	predictevidences <- paste("AllEvidences-",predict_set)
@@ -31,7 +31,7 @@ SVMTrain<-function(input, replaceNA = 0)
 
 ComputeAllEvidences<-function(input,output="AllEvidences-ppiPre.csv",organism="yeast", drop ="IEA", header=TRUE, sep=",") 
 {
-	wh_organism <- match.arg(organism, c("human", "fly", "mouse", "rat", "yeast", "zebrafish", "worm", "arabidopsis", "ecolik12", "bovine","canine","anopheles","ecsakai","chicken","chimp","malaria","rhesus","pig","xenopus", "coelicolor"))
+	wh_organism <- match.arg(organism, c("human", "fly", "mouse", "rat", "yeast", "zebrafish", "worm", "arabidopsis", "ecolik12", "bovine","canine","anopheles","ecsakai","chicken","chimp","malaria","rhesus","pig","xenopus"))
 	dropcodes <- drop
 	inputfile<-read.csv(file=input,header=header,sep=sep)
 	positivenode<-inputfile[which(inputfile[3]==1),] 
@@ -42,9 +42,9 @@ ComputeAllEvidences<-function(input,output="AllEvidences-ppiPre.csv",organism="y
 	for(i in 1:length(inputfile[[1]]))
 	{
 		message(paste("Computing evidences",as.character(Sims[[1]][i]),as.character(Sims[[2]][i])))
-		Sims[[4]][i]<-WangGeneSim(as.character(Sims[[1]][i]),as.character(Sims[[2]][i]),ont="BP", organism=wh_organism, drop <- dropcodes )$geneSim
-     	 	Sims[[5]][i]<-WangGeneSim(as.character(Sims[[1]][i]),as.character(Sims[[2]][i]),ont="MF", organism=wh_organism,drop <- dropcodes )$geneSim
-      		Sims[[6]][i]<-WangGeneSim(as.character(Sims[[1]][i]),as.character(Sims[[2]][i]),ont="CC", organism=wh_organism,drop <- dropcodes )$geneSim
+		Sims[[4]][i]<-geneSim(as.character(Sims[[1]][i]),as.character(Sims[[2]][i]),ont="BP", organism=wh_organism, measure="Wang",drop <- dropcodes )$geneSim
+		Sims[[5]][i]<-geneSim(as.character(Sims[[1]][i]),as.character(Sims[[2]][i]),ont="MF", organism=wh_organism,measure="Wang",drop <- dropcodes )$geneSim
+		Sims[[6]][i]<-geneSim(as.character(Sims[[1]][i]),as.character(Sims[[2]][i]),ont="CC", organism=wh_organism,measure="Wang",drop <- dropcodes )$geneSim
 		Sims[[7]][i]<-TCSSGeneSim(as.character(Sims[[1]][i]),as.character(Sims[[2]][i]),ont="BP", organism=wh_organism,drop <- dropcodes )$geneSim
 		Sims[[8]][i]<-TCSSGeneSim(as.character(Sims[[1]][i]),as.character(Sims[[2]][i]),ont="MF", organism=wh_organism,drop <- dropcodes )$geneSim
 		Sims[[9]][i]<-TCSSGeneSim(as.character(Sims[[1]][i]),as.character(Sims[[2]][i]),ont="CC", organism=wh_organism,drop <- dropcodes )$geneSim
