@@ -24,7 +24,7 @@ KEGGSim <- function(protein1, protein2)    # KEGG-based similarity of two protei
     sim<-0
   else
     sim<-intersec/(length(Pathway1)+length(Pathway2)-intersec)
-  return(sim)
+  return(sim) 
 }
 
 GOKEGGSims <- function(gene1, gene2, organism="yeast", drop ="IEA")  #KEGG- and GO-based similarity of two proteins

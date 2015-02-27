@@ -1,5 +1,4 @@
 # Export
-#exportPattern(".")
 export(AASim)
 export(ComputeAllEvidences)
 export(FNPre)
