@@ -298,53 +298,58 @@ FNPre<-function(file,indicator=c("RA","AA","Jaccard"),threshold=0.1, output="Fal
 JaccardSim <- function(node1, node2,graph)    #Jaccard similarity of two nodes
 {
        #if(!require("igraph")){ stop("package igraph is needed.")}
-
+  #node1<-"1134"
+  #node2<-"1147"
 	nodes<-get.vertex.attribute(graph,"name")
-	neighbor1 <- neighborhood(graph,1,node1) #get neighbors of node1 including node1 itself
-	neighbor1[[1]][1]<-length(nodes)+1  #remove the node itself
-	neighbor2 <- neighborhood(graph,1,node2)
-	neighbor2[[1]][1]<-length(nodes)+2
-	insersec <- length(na.omit(match(neighbor1[[1]],neighbor2[[1]])))
-	sim <- insersec/(length(neighbor1[[1]])+length(neighbor2[[1]])-2-insersec)
+  neighbor1 <- lapply(neighborhood(graph,1,node1), as.vector)
+	neighbor2 <- lapply(neighborhood(graph,1,node2), as.vector)
+	neighbor1<-neighbor1[[1]][-1] #remove the node itself
+	neighbor2<-neighbor2[[1]][-1] #remove the node itself
+	#neighbor1 <- neighborhood(graph,1,node1) #get neighbors of node1 including node1 itself
+	#neighbor1[[1]][1]<-length(nodes)+1  #remove the node itself
+	#neighbor2 <- neighborhood(graph,1,node2)
+	#neighbor2[[1]][1]<-length(nodes)+2
+	#insersec <- length(na.omit(match(neighbor1[[1]],neighbor2[[1]])))
+	insersec <- length(na.omit(match(neighbor1,neighbor2)))
+	uni <- length(neighbor1)+length(neighbor2)-insersec
+	sim <- insersec/uni
 	return(sim)
 }
 
 AASim<- function(node1,node2,graph) #AA similarity of two nodes
 {
-       #if(!require("igraph")){ stop("package igraph is needed.")}
-	nodes<-get.vertex.attribute(graph,"name")	
-	neighbor1<-neighborhood(graph,1,node1)
-	neighbor1[[1]][1]<-length(nodes)+1 
-	neighbor2<-neighborhood(graph,1,node2)
-	neighbor2[[1]][1]<-length(nodes)+2
-	commons<-na.omit(match(neighbor1[[1]],neighbor2[[1]])) #common neighbours of two nodes
-	sim<-0
-	if(length(commons)!=0)
-	{	for(n in 1:length(commons))
-		{
-			sim<-sim+1/(log10(degree(graph,v=nodes[neighbor2[[1]][commons[n]]+1])))	
-		}
-	}
-	return(sim)
+  #if(!require("igraph")){ stop("package igraph is needed.")}
+  nodes<-get.vertex.attribute(graph,"name")	
+  neighbor1 <- lapply(neighborhood(graph,1,node1), as.vector)
+  neighbor2 <- lapply(neighborhood(graph,1,node2), as.vector)
+  neighbor1<-neighbor1[[1]][-1] #remove the node itself
+  neighbor2<-neighbor2[[1]][-1] #remove the node itself
+  commons<-na.omit(match(neighbor1,neighbor2)) #common neighbours of two nodes
+  sim<-0
+  if(length(commons)!=0)
+    for(n in 1:length(commons))
+      sim<-sim+1/log10(degree(graph,v=nodes[neighbor2[commons[n]]]))
+  
+  return(sim)
 }
 
 RASim<-function(node1,node2,graph) #RA similarity of two nodes
 {
-       #if(!require("igraph")){ stop("package igraph is needed.")}   
-       nodes<-get.vertex.attribute(graph,"name")	
-	neighbor1<-neighborhood(graph,1,node1)
-	neighbor1[[1]][1]<-length(nodes)+1 
-	neighbor2<-neighborhood(graph,1,node2)
-	neighbor2[[1]][1]<-length(nodes)+2
-	commons<-na.omit(match(neighbor1[[1]],neighbor2[[1]]))
-	sim<-0
-	if(length(commons)!=0)
-	{	for(n in 1:length(commons))
-		{
-			sim<-sim+1/degree(graph,v=nodes[neighbor2[[1]][commons[n]]+1])
-		}
-	}
-	return(sim)
+  #if(!require("igraph")){ stop("package igraph is needed.")}   
+  nodes<-get.vertex.attribute(graph,"name")	
+  neighbor1 <- lapply(neighborhood(graph,1,node1), as.vector)
+  neighbor2 <- lapply(neighborhood(graph,1,node2), as.vector)
+  neighbor1<-neighbor1[[1]][-1] #remove the node itself
+  neighbor2<-neighbor2[[1]][-1] #remove the node itself
+  commons<-na.omit(match(neighbor1,neighbor2)) #common neighbours of two nodes
+  sim<-0
+  if(length(commons)!=0)
+  {	for(n in 1:length(commons))
+  {
+    sim<-sim+1/degree(graph,v=nodes[neighbor2[commons[n]]])
+  }
+  }
+  return(sim)
 }
 
 TopologicSims<-function(inputfile,outputfile="TopologicSims-ppiPre.csv", header=TRUE, sep=",") 

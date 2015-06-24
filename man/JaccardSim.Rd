@@ -26,7 +26,7 @@ JaccardSim(node1, node2, graph)
 }
 \examples{
   edges <- data.frame(node1=c("1132", "1133", "1134", "1134", "1145", "1147", "1147", "1147"),
-                      node2=c("1134", "1134", "1145", "1147", "1147", "1148", "1149", "1150"))
+                      node2=c("1134", "1134", "1145", "1147", "1147", "1148", "1149", "1133"))
   graph<-igraph::graph.data.frame(edges,directed=FALSE)
   JaccardSim("1134","1147",graph)
 }

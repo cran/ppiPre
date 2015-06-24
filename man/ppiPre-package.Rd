@@ -14,9 +14,9 @@
 \tabular{ll}{
 Package: \tab ppiPre\cr
 Type: \tab Package\cr
-Version: \tab 1.7\cr
-Date: \tab 2015-02-27\cr
-Depends:\tab R (>= 3.0.0)\cr
+Version: \tab 1.8\cr
+Date: \tab 2015-06-24\cr
+Depends:\tab R (>= 3.1.0)\cr
 Imports:\tab AnnotationDbi, igraph, e1071, GOSemSim, GO.db\cr
 Enhances:\tab org.Sc.sgd.db, org.Ag.eg.db, org.Xl.eg.db, org.Ss.eg.db,\cr
          \tab org.At.tair.db, org.Bt.eg.db, org.Ce.eg.db, org.Cf.eg.db,\cr
