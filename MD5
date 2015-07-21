@@ -1,13 +1,14 @@
-78c1d0771ed0e63e7952ca57caf34d7a *DESCRIPTION
+8b56ec51d9f6058de0c517b0a5014e1a *DESCRIPTION
 b453608489991fd159c10e780cab7ca5 *NAMESPACE
-5082d0e268e20896b69463a22417e22b *R/GOKEGGSims.r
+bf890cfe6a8f908bc9031a359721dc2f *NEWS
+d9bb61ac25a3d26c7671d031c6c2d0ae *R/GOKEGGSims.r
 adf4a48d72eb726f223e2b1479fc22eb *R/SVMPredict.r
 40de3033845f15725dc85b1df94d0d43 *R/TopologicSims.r
 b5903ef4e5608fca58644c9e094ea2e7 *R/zzz.r
 6f2ce2b2cc7ab6335b2dd7bbed6c6c5f *man/AASim.Rd
 bdedbf482fd60a22c05c8f447859827b *man/ComputeAllEvidences.Rd
 88e3e739c446fe0a249ce9fc8968e7eb *man/FNPre.Rd
-a8d515337c60035837df180e9a64b6a4 *man/GOKEGGSims.Rd
+be28cd68dca3d231d82b838070d5fffe *man/GOKEGGSims.Rd
 7ca6a1713c26ba3f6d14e2ceef913e8f *man/GOKEGGSimsFromFile.Rd
 8745cab17c46cee279f5a6d2583ca468 *man/IntelliGOGeneSim.Rd
 e8ae00d158900f48365d51d566c10ef7 *man/JaccardSim.Rd
@@ -18,4 +19,4 @@ f4d23be98bddc92c6dcbd44c83ac10f5 *man/SVMTrain.Rd
 598051bbc698191d8eb63d54544e6bb7 *man/TCSSGeneSim.Rd
 9c4fff9a1b32b706ce27ffdc9dbd1647 *man/TopologicSims.Rd
 8172ec3675ce90bf2154b5a18de8c351 *man/ppiPre-internal.Rd
-d8b9cbfe15ab3d65e99b7f77c61d42c1 *man/ppiPre-package.Rd
+1a723276f8af54844637b5862f52add0 *man/ppiPre-package.Rd

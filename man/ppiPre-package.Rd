@@ -9,13 +9,13 @@
 	Predicting protein-protein interactions based on functional and topologic similarities
 }
 \details{
-	This package integrates functions for computing similarities between proteins based on their GO annotation, KEGG annotation and PPI network topology. It integrates seven features(similarities) to predict PPIs using an SVM classifier. 
-	Some internal functions to manipulate GO.db are derived from R package GOSemSim authored by Guangchuang Yu <guangchuangyu@gmail.com>. 
+	This package integrates functions for computing similarities between proteins based on their GO annotation, KEGG annotation and PPI network topology. It integrates seven features(TCSS, IntelliGO, Wang, KEGG, Jaccard, RA and AA) to predict PPIs using an SVM classifier. 
+	Some internal functions to manipulate GO.db are re-used from R package GOSemSim authored by Guangchuang Yu <guangchuangyu@gmail.com>. 
 \tabular{ll}{
 Package: \tab ppiPre\cr
 Type: \tab Package\cr
-Version: \tab 1.8\cr
-Date: \tab 2015-06-24\cr
+Version: \tab 1.9\cr
+Date: \tab 2015-07-21\cr
 Depends:\tab R (>= 3.1.0)\cr
 Imports:\tab AnnotationDbi, igraph, e1071, GOSemSim, GO.db\cr
 Enhances:\tab org.Sc.sgd.db, org.Ag.eg.db, org.Xl.eg.db, org.Ss.eg.db,\cr

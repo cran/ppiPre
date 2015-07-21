@@ -1,0 +1,13 @@
+1.9
+--------------------------------------------------------------------------------
+
+* Update the description of package and manual of several functions.
+
+1.8
+--------------------------------------------------------------------------------
+
+* Compatibility with igraph v1.0
+
+* In KEGGSim.R, state that five functions (TCSSGetAncestors, TCSSCompute_ICA, GetOntology, GetGOParents, GetLatestCommonAncestor) are re-used from R package GOSemSim[1] authored by Guangchuang Yu. 
+
+[1]G. Yu, F. Li, Y. Qin, X. Bo, Y. Wu, and S. Wang, "GOSemSim: an R package for measuring semantic similarity among GO terms and gene products", Bioinformatics, vol. 26, no. 7, pp. 976-978, Apr. 2010.

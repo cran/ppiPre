@@ -1,4 +1,4 @@
-# Several functions to calculate GO semantic similarity (TCSSGetAncestors, TCSSCompute_ICA, GetOntology, GetGOParents, GetLatestCommonAncestor) are derived from R package GOSemSim authored by Guangchuang Yu <guangchuangyu@gmail.com>. 
+# Several functions to calculate GO semantic similarities (TCSSGetAncestors, TCSSCompute_ICA, GetOntology, GetGOParents, GetLatestCommonAncestor) are re-used from R package GOSemSim authored by Guangchuang Yu <guangchuangyu@gmail.com>. 
 # Reference: G. Yu, F. Li, Y. Qin, X. Bo, Y. Wu, and S. Wang, "GOSemSim: an R package for measuring semantic similarity among GO terms and gene products", Bioinformatics, vol. 26, no. 7, pp. 976-978, Apr. 2010.
 # Modification time: 2011.11
 
@@ -94,7 +94,7 @@ TCSSGetChildren <- function(ont="MF") {
   assign(eval(wh_Children), Children, envir=ppiPreEnv)
 }
 
-# Derived from GOSemSim authored by Guangchuang Yu <guangchuangyu@gmail.com>. 
+# Re-used from GOSemSim authored by Guangchuang Yu <guangchuangyu@gmail.com>. 
 # Reference: G. Yu, F. Li, Y. Qin, X. Bo, Y. Wu, and S. Wang, "GOSemSim: an R package for measuring semantic similarity among GO terms and gene products", Bioinformatics, vol. 26, no. 7, pp. 976-978, Apr. 2010.
 # Modification time: 2011.11
 TCSSGetAncestors <- function(ont="MF") { 
@@ -173,7 +173,7 @@ CheckAnnotationPackage <- function(species){
 }
 
 
-# Derived from GOSemSim authored by Guangchuang Yu <guangchuangyu@gmail.com>. 
+# Re-used from GOSemSim authored by Guangchuang Yu <guangchuangyu@gmail.com>. 
 # Reference: G. Yu, F. Li, Y. Qin, X. Bo, Y. Wu, and S. Wang, "GOSemSim: an R package for measuring semantic similarity among GO terms and gene products", Bioinformatics, vol. 26, no. 7, pp. 976-978, Apr. 2010.
 # Modification time: 2011.11
 `GetOntology` <-  function(gene, organism, ontology, dropCodes) {
@@ -249,7 +249,7 @@ CheckAnnotationPackage <- function(species){
   return (unlist(unique(names(allGO)))) #return the GOIDs
 }
 
-# Derived from GOSemSim authored by Guangchuang Yu <guangchuangyu@gmail.com>. 
+# Re-used from GOSemSim authored by Guangchuang Yu <guangchuangyu@gmail.com>. 
 # Reference: G. Yu, F. Li, Y. Qin, X. Bo, Y. Wu, and S. Wang, "GOSemSim: an R package for measuring semantic similarity among GO terms and gene products", Bioinformatics, vol. 26, no. 7, pp. 976-978, Apr. 2010.
 # Modification time: 2011.11
 GetLatestCommonAncestor<-function(GOID1, GOID2, ont, organism){
@@ -299,7 +299,7 @@ GetLatestCommonAncestor<-function(GOID1, GOID2, ont, organism){
   
 }
 
-# Derived from GOSemSim authored by Guangchuang Yu <guangchuangyu@gmail.com>. 
+# Re-used from GOSemSim authored by Guangchuang Yu <guangchuangyu@gmail.com>. 
 # Reference: G. Yu, F. Li, Y. Qin, X. Bo, Y. Wu, and S. Wang, "GOSemSim: an R package for measuring semantic similarity among GO terms and gene products", Bioinformatics, vol. 26, no. 7, pp. 976-978, Apr. 2010.
 # Modification time: 2011.11
 TCSSCompute_ICA<- function(dropCodes="IEA", ont, organism) {
@@ -422,7 +422,7 @@ TCSSCompute_ICA<- function(dropCodes="IEA", ont, organism) {
     return (list(geneSim=sim, GO1=go1, GO2=go2)) 
   }	
 
-# Derived from GOSemSim authored by Guangchuang Yu <guangchuangyu@gmail.com>. 
+# Re-used from GOSemSim authored by Guangchuang Yu <guangchuangyu@gmail.com>. 
 # Reference: G. Yu, F. Li, Y. Qin, X. Bo, Y. Wu, and S. Wang, "GOSemSim: an R package for measuring semantic similarity among GO terms and gene products", Bioinformatics, vol. 26, no. 7, pp. 976-978, Apr. 2010.
 # Modification time: 2011.11
 GetGOParents <- function(ont="MF") {
